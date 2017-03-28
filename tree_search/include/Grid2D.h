@@ -24,6 +24,16 @@ public:
 	void AddEnd(int x, int y);
 	int AtPos(Point2D loc);
 
-	SearchNode* GetStart() { return _startNode; }
-	SearchNode* GetEnd() { return _endNode; }
+	SearchNode* GetStart();
+	SearchNode* GetEnd();
 };
+
+SearchNode* Grid2D::GetStart()
+{
+	return _startNode;
+}
+
+SearchNode* Grid2D::GetEnd()
+{
+	return _endNode;
+}

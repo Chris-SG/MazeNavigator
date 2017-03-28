@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Node.h"
-#include "Grid2D.h"
-
 #include "ITreeSearch.h"
 
 #define COST_UP 1
@@ -19,7 +16,12 @@ public:
 	Navigator(int width, int height);
 	~Navigator();
 
-	Grid2D* GetMap() const { return _map; };
+	Grid2D* GetMap();
 
 	void Navigate(TreeSearch* searchModule);
 };
+
+Grid2D* Navigator::GetMap()
+{
+	return _map;
+}

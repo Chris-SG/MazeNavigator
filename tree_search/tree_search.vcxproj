@@ -155,6 +155,7 @@
     <ClCompile Include="src\Node.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AdditionalTypes.h" />
     <ClInclude Include="include\BreadthFirstSearch.h" />
     <ClInclude Include="include\DepthFirstSearch.h" />
     <ClInclude Include="include\Grid2D.h" />

@@ -1,9 +1,7 @@
 #pragma once
-#include <string>
 #include <algorithm>
 #include <vector>
 
-#include "Node.h"
 #include "Grid2D.h"
 
 #define LEFT 0

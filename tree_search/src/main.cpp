@@ -1,4 +1,3 @@
-#include "../include/Navigator.h"
 #include "../include/MapParser.h"
 #include "../include/DepthFirstSearch.h"
 #include "../include/Timer.h"
@@ -13,8 +12,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
-	Navigator* lNavigator;
+	Navigator* lNavigator = nullptr;
 
 	try
 	{
@@ -29,8 +27,6 @@ int main(int argc, char* argv[])
 
 		return 2;
 	}
-	chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
-	cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << endl;
 
 	delete lNavigator;
 

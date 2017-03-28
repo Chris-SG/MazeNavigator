@@ -31,7 +31,7 @@ void MapParser::ReadFile(Navigator* to)
 			lReadLine.erase(remove(lReadLine.begin(), lReadLine.end(), '['), lReadLine.end());
 			lReadLine.erase(remove(lReadLine.begin(), lReadLine.end(), ']'), lReadLine.end());
 			string br = ",";
-			while ((pos != lReadLine.find(br)) != string::npos)
+			while ((pos = lReadLine.find(br)) != string::npos)
 			{
 				lLineBroken.push_back(lReadLine.substr(0, pos));
 				lReadLine.erase(0, (pos + br.size()));
@@ -63,16 +63,16 @@ void MapParser::ReadFile(Navigator* to)
 			{
 				if (lLinesRead == 1)
 				{
-					to->GetMap->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap()->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 				else if (lLinesRead == 2)
 				{
-					to->GetMap->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap()->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 			}
 			else if (lLineBroken.size() == 4)
 			{
-				to->GetMap->AddLocation(stoi(lLineBroken[0]), stoi(lLineBroken[1]), stoi(lLineBroken[2]), stoi(lLineBroken[3]));
+				to->GetMap()->AddLocation(stoi(lLineBroken[0]), stoi(lLineBroken[1]), stoi(lLineBroken[2]), stoi(lLineBroken[3]));
 			}
 		}
 
@@ -81,5 +81,5 @@ void MapParser::ReadFile(Navigator* to)
 	}
 
 	timer.EndTimer();
-	cout << "Map analyzed in " << timer.PrintTime_ms << endl;
+	cout << "Map analyzed in " << timer.PrintTime_ms() << endl;
 }

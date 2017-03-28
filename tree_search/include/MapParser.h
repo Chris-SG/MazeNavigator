@@ -12,11 +12,6 @@ struct Block{
 	int h;
 };
 
-struct Point2D {
-	int x;
-	int y;
-};
-
 class MapParser
 {
 private:
