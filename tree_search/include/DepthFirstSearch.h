@@ -3,5 +3,8 @@
 
 class DepthFirstSearch : public TreeSearch
 {
-
+private:
+public:
+	DepthFirstSearch();
+	virtual std::vector<SearchNode*> Solve(Grid2D* map);
 };

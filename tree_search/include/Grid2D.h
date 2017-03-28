@@ -1,28 +1,29 @@
 #pragma once
 
-template<typename T, int width, int height>
+#include "Node.h"
+
+#define CLEAR 0
+#define BLOCKED 1
+#define POSITION 2
+#define END 3
 
 class Grid2D
 {
 private:
+	int** _map;
+	int _width, _height;
+
+	SearchNode* _startNode;
+	SearchNode* _endNode;
 public:
-	T _data[width*height];
+	Grid2D(int width, int height);
+	~Grid2D();
 
-	iterator begin()
-	{
-		return iterator(_data);
-	}
+	void AddLocation(int x, int y, int w, int h);
+	void AddStart(int x, int y);
+	void AddEnd(int x, int y);
+	int AtPos(Point2D loc);
 
-	iterator end()
-	{
-		return iterator(_data + width*height);
-	}
-
-	class iterator
-	{
-	private:
-		T* ptr;
-	public:
-
-	};
+	SearchNode* GetStart() { return _startNode; }
+	SearchNode* GetEnd() { return _endNode; }
 };

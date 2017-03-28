@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DepthFirstSearch.cpp" />
+    <ClCompile Include="src\Grid2D.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MapParser.cpp" />
     <ClCompile Include="src\Navigator.cpp" />

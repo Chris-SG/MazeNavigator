@@ -19,6 +19,8 @@ public:
 	int GetDistance_Travelled(const SearchNode& start);
 	int GetDistance_Remaining(int endX, int endY);
 
+	SearchNode* GetPrevious() { return _previousNode; };
+
 	bool operator==(const SearchNode& otherNode) const;
 	bool operator!=(const SearchNode& otherNode) const;
 };
