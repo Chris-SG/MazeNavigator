@@ -19,5 +19,7 @@ public:
 	Navigator(int width, int height);
 	~Navigator();
 
-	void Navigate(TreeSearch& searchModule);
+	Grid2D* GetMap() const { return _map; };
+
+	void Navigate(TreeSearch* searchModule);
 };

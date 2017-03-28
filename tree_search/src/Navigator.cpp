@@ -30,9 +30,9 @@ Navigator::~Navigator()
 /// Start navigation!
 /// </summary>
 /// <param name="searchModule">Search algorithm module to use when navigating map</param>
-void Navigator::Navigate(TreeSearch& searchModule)
+void Navigator::Navigate(TreeSearch* searchModule)
 {
 	vector<SearchNode*> path;
 
-	path = searchModule.Solve(_map);
+	path = searchModule->Solve(_map);
 }

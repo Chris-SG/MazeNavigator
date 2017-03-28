@@ -63,16 +63,16 @@ void MapParser::ReadFile(Navigator* to)
 			{
 				if (lLinesRead == 1)
 				{
-					to->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 				else if (lLinesRead == 2)
 				{
-					to->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 			}
 			else if (lLineBroken.size() == 4)
 			{
-				to->AddLocation(stoi(lLineBroken[0]), stoi(lLineBroken[1]), stoi(lLineBroken[2]), stoi(lLineBroken[3]));
+				to->GetMap->AddLocation(stoi(lLineBroken[0]), stoi(lLineBroken[1]), stoi(lLineBroken[2]), stoi(lLineBroken[3]));
 			}
 		}
 
