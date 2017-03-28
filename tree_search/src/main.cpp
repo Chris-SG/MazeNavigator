@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../include/MapParser.h"
 #include "../include/DepthFirstSearch.h"
 #include "../include/Timer.h"

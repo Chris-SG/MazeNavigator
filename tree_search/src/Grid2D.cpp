@@ -104,3 +104,13 @@ int Grid2D::AtPos(Point2D pos)
 	}
 	return _map[pos.x][pos.y];
 }
+
+SearchNode* Grid2D::GetStart()
+{
+	return _startNode;
+}
+
+SearchNode* Grid2D::GetEnd()
+{
+	return _endNode;
+}

@@ -24,6 +24,13 @@ Navigator::~Navigator()
 	delete _map;
 }
 
+/// <summary>
+/// Return the navigator's related map
+/// </summary>
+Grid2D* Navigator::GetMap()
+{
+	return _map;
+}
 
 
 /// <summary>

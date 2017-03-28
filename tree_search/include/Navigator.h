@@ -20,8 +20,3 @@ public:
 
 	void Navigate(TreeSearch* searchModule);
 };
-
-Grid2D* Navigator::GetMap()
-{
-	return _map;
-}

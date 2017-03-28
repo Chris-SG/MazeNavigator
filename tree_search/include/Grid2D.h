@@ -27,13 +27,3 @@ public:
 	SearchNode* GetStart();
 	SearchNode* GetEnd();
 };
-
-SearchNode* Grid2D::GetStart()
-{
-	return _startNode;
-}
-
-SearchNode* Grid2D::GetEnd()
-{
-	return _endNode;
-}
