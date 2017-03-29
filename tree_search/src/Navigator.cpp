@@ -43,4 +43,6 @@ void Navigator::Navigate(TreeSearch* searchModule)
 	vector<SearchNode*> path;
 	cout << "Solving now" << endl;
 	path = searchModule->Solve(_map);
+
+	cout << "solved path!" << endl;
 }

@@ -32,6 +32,8 @@ int main(int argc, char* argv[])
 		return 2;
 	}
 
+	cout << "Cleaning up..." << endl;
+
 	delete lNavigator;
 
 	return 0;

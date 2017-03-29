@@ -26,6 +26,7 @@ public:
 
 	SearchNode* GetPrevious() { return _previousNode; };
 
-	bool operator==(const SearchNode& otherNode) const;
-	bool operator!=(const SearchNode& otherNode) const;
+	bool operator==(const SearchNode& otherNode);
+	bool operator!=(const SearchNode& otherNode);
+	bool IsEqual(const SearchNode& otherNode);
 };

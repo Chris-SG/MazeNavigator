@@ -24,7 +24,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 
 	// Keep trying until we find the end
 	/* consider adding a check so we can't get stuck (will probably crash) */
-	while (_currentNode != map->GetEnd())
+	while (!(_currentNode->IsEqual(*map->GetEnd())))
 	{
 		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 		// Each node can move to 4 different positions (L/R U/D)
@@ -95,10 +95,9 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				for (int i = 0; i < _searchedNodes.size(); i++)
 				{
 					// If we have already visited the node before...
-					if (lToPush == _searchedNodes[i])
+					if (_searchedNodes[i]->IsEqual(*lToPush))
 					{
 						// We don't want to visit it again, so delete the node
-						cout << "We have already visited this node!" << endl;
 						lVisited = true;
 						delete lToPush;
 						break;
@@ -114,13 +113,13 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				}
 			}
 		}
-
-		cout << "Searched " << _searchedNodes.size() << ". List to visit has " << _searchStack.size() << endl;
 	
 		_searchedNodes.push_back(_currentNode); // We can add our current node to the list of nodes we have searched
 		_currentNode = _searchStack.back(); // And get a new node to visit
 		_searchStack.pop_back(); // And remove it from the list of nodes we need to visit
 	}
+
+	cout << "Path found!" << endl;
 
 	vector<SearchNode*> lPath; //This will hold the full maze path
 
@@ -132,6 +131,8 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 		_currentNode = _currentNode->GetPrevious(); // get the previous node in the path
 	}
 
+	cout << "Path added" << endl;
+
 	// We need to delete all our unused nodes
 	// Will need to add a check so we don't delete our lPath nodes
 	for (int i = 0; i < _searchedNodes.size(); i++)
@@ -139,6 +140,8 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 		delete _searchedNodes[i]; //Delete node
 	}
 	_searchedNodes.clear(); //Clear vector
+
+	cout << "Cleared nodes" << endl;
 
 	/*
 	/// Still need to delete searchStack

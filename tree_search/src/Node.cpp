@@ -27,12 +27,13 @@ SearchNode::~SearchNode()
 
 }
 
-bool SearchNode::operator==(const SearchNode& otherNode) const
+#include <iostream>
+bool SearchNode::operator==(const SearchNode& otherNode)
 {
 	return (otherNode.GetPos().x == _position.x && otherNode.GetPos().y == _position.y);
 }
 
-bool SearchNode::operator!=(const SearchNode& otherNode) const
+bool SearchNode::operator!=(const SearchNode& otherNode)
 {
 	return !(*this == otherNode);
 }
@@ -40,12 +41,17 @@ bool SearchNode::operator!=(const SearchNode& otherNode) const
 int SearchNode::GetDistance_Travelled(const SearchNode& start)
 {
 	int ret = 0;
-	if (*this != start && _previousNode != nullptr)
+	if (*this != start && &_previousNode != nullptr)
 	{
 		ret = 1 + _previousNode->GetDistance_Travelled(start);
 	}
 
 	return ret;
+}
+
+bool SearchNode::IsEqual(const SearchNode& otherNode)
+{
+	return *this == otherNode;
 }
 
 int SearchNode::GetDistance_Remaining(int endX, int endY)
