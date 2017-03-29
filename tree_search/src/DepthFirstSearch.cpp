@@ -18,7 +18,6 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 {
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
-	cout << "Start node is at " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 
 	// Work out what direction we want to be moving
 	GetDirectionOrder(map->GetEnd()->GetPos());
@@ -29,7 +28,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 	{
 		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 		// Each node can move to 4 different positions (L/R U/D)
-		for (int i = 0; i < 4; i++)
+		for (int i = 3; i >= 0; i--)
 		{
 			Point2D lPos = _currentNode->GetPos(); //Store the postion of our current node
 
@@ -42,6 +41,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				if (map->AtPos(lPos) != BLOCKED)
 				{
 					lToPush = new SearchNode(lPos, _currentNode);
+					cout << "Left was " << i << endl;
 				}
 				else
 				{
@@ -53,6 +53,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				if (map->AtPos(lPos) != BLOCKED)
 				{
 					lToPush = new SearchNode(lPos, _currentNode);
+					cout << "Right was " << i << endl;
 				}
 				else
 				{
@@ -64,6 +65,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				if (map->AtPos(lPos) != BLOCKED)
 				{
 					lToPush = new SearchNode(lPos, _currentNode);
+					cout << "Up was " << i << endl;
 				}
 				else
 				{
@@ -75,6 +77,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				if (map->AtPos(lPos) != BLOCKED)
 				{
 					lToPush = new SearchNode(lPos, _currentNode);
+					cout << "Down was " << i << endl;
 				}
 				else
 				{
@@ -95,6 +98,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 					if (lToPush == _searchedNodes[i])
 					{
 						// We don't want to visit it again, so delete the node
+						cout << "We have already visited this node!" << endl;
 						lVisited = true;
 						delete lToPush;
 						break;
@@ -105,6 +109,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				if (!lVisited)
 				{
 					// Add it to our list of must-visit nodes
+					cout << "Add node to stack!" << endl;
 					_searchStack.push_back(lToPush);
 				}
 			}

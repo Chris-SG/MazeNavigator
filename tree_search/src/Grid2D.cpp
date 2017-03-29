@@ -78,7 +78,7 @@ void Grid2D::AddStart(int x, int y)
 	start.y = y;
 
 	_startNode = new SearchNode(start);
-	_map[x][y] = POSITION;
+	_map[y][x] = POSITION;
 }
 
 /// <summary>
@@ -93,16 +93,16 @@ void Grid2D::AddEnd(int x, int y)
 	endPt.y = y;
 
 	_endNode = new SearchNode(endPt);
-	_map[x][y] = END;
+	_map[y][x] = END;
 }
 
 int Grid2D::AtPos(Point2D pos)
 {
-	if (0 > pos.x || _width < pos.x || 0 > pos.y || _height < pos.y)
+	if (0 > pos.x || _width <= pos.x || 0 > pos.y || _height <= pos.y)
 	{
 		return BLOCKED;
 	}
-	return _map[pos.x][pos.y];
+	return _map[pos.y][pos.x];
 }
 
 void Grid2D::PrintMap()

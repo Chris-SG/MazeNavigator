@@ -86,12 +86,12 @@ void MapParser::ReadFile(Navigator*& to)
 				// If it is the second line to be read, we use these co-ordinates for the start
 				if (lLinesRead == 1)
 				{
-					to->GetMap()->AddStart(stoi(lLineBroken[1]), stoi(lLineBroken[0]));
+					to->GetMap()->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 				// If it is the third line to be read, we use these co-ordinates for the end
 				else if (lLinesRead == 2)
 				{
-					to->GetMap()->AddEnd(stoi(lLineBroken[1]), stoi(lLineBroken[0]));
+					to->GetMap()->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 				cout << "done" << endl;
 			}
