@@ -9,6 +9,9 @@
 #define UP 2
 #define DOWN 3
 
+/// <summary>
+/// Search algorithms are build off the TreeSearch interface
+/// </summmary>
 class TreeSearch
 {
 private:
@@ -16,11 +19,11 @@ private:
 public:
 	virtual std::vector<SearchNode*> Solve(Grid2D* map) = 0;
 protected:	
-	std::vector<SearchNode*> _searchedNodes;
-	std::vector<SearchNode*> _searchStack;
-	SearchNode* _currentNode;
+	std::vector<SearchNode*> _searchedNodes; //The nodes that have been searched, to avoid loops
+	std::vector<SearchNode*> _searchStack; //The nodes that are still yet to be searched
+	SearchNode* _currentNode; //Current node the search is located at
 
-	int _directionOrder[4];
+	int _directionOrder[4]; //Used to store the order in which a search is made (for DFS/BFS)
 
 	bool AtEnd(SearchNode* endNode) { return _currentNode == endNode; }
 	void GetDirectionOrder(Point2D end);

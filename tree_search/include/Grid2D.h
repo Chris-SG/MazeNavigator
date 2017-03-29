@@ -7,6 +7,10 @@
 #define POSITION 2
 #define END 3
 
+/// <summary>
+/// A Grid2D holds information relating to a provided map, including
+/// the layout, the start point, and the end point.
+/// </summary>
 class Grid2D
 {
 private:
