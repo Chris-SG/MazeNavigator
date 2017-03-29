@@ -21,7 +21,7 @@ MapParser::MapParser(string filename)
 /// Parse file provided and add map information to navigator provided
 /// </summary>
 /// <param name="to">Navigator to attach map to</param>
-void MapParser::ReadFile(Navigator* to)
+void MapParser::ReadFile(Navigator*& to)
 {
 	// Time how long parsing the map will take
 	ChronoTimer timer;
@@ -60,10 +60,9 @@ void MapParser::ReadFile(Navigator* to)
 			if (lLineBroken.size() == 2)
 			{
 				// Create a navigator using the found parameters as the map size
-				to = new Navigator(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+				to = new Navigator(stoi(lLineBroken[1]), stoi(lLineBroken[0]));
 			}
 		}
-
 		// If our line is contained within () brackets
 		else if (lReadLine[0]=='(' && lReadLine[lReadLine.size() - 1]==')')
 		{
@@ -87,13 +86,14 @@ void MapParser::ReadFile(Navigator* to)
 				// If it is the second line to be read, we use these co-ordinates for the start
 				if (lLinesRead == 1)
 				{
-					to->GetMap()->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap()->AddStart(stoi(lLineBroken[1]), stoi(lLineBroken[0]));
 				}
 				// If it is the third line to be read, we use these co-ordinates for the end
 				else if (lLinesRead == 2)
 				{
-					to->GetMap()->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
+					to->GetMap()->AddEnd(stoi(lLineBroken[1]), stoi(lLineBroken[0]));
 				}
+				cout << "done" << endl;
 			}
 			
 			// ALl other lines are blocked locations, so block all them off

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 
 #include "../include/Navigator.h"
 #include "../include/MapParser.h"
@@ -40,6 +41,6 @@ Grid2D* Navigator::GetMap()
 void Navigator::Navigate(TreeSearch* searchModule)
 {
 	vector<SearchNode*> path;
-
+	cout << "Solving now" << endl;
 	path = searchModule->Solve(_map);
 }

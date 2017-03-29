@@ -28,6 +28,8 @@ public:
 	void AddEnd(int x, int y);
 	int AtPos(Point2D loc);
 
+	void PrintMap();
+
 	SearchNode* GetStart();
 	SearchNode* GetEnd();
 };

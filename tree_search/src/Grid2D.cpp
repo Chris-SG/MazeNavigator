@@ -1,6 +1,7 @@
 #include "../include/Grid2D.h"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -53,12 +54,11 @@ void Grid2D::AddLocation(int x, int y, int w, int h)
 	{
 		return;
 	}
-
 	//Iterate over relevant rows. Ensure starts counting from 0 or higher
-	for (int i = max(0, y); i < min(h, (_height - y)); i++)
+	for (int i = max(0, y); i < min(y + h, (_height)); i++)
 	{
 		//Iterate over relevant columns. Ensure starts counting from 0 or higher
-		for (int j = max(0, x); i < min(w, (_width - x)); i++)
+		for (int j = max(0, x); j < min(x + w, (_width)); j++)
 		{
 			//Block that section
 			_map[i][j] = BLOCKED;
@@ -104,6 +104,57 @@ int Grid2D::AtPos(Point2D pos)
 	}
 	return _map[pos.x][pos.y];
 }
+
+void Grid2D::PrintMap()
+{
+	for (int i = _width+2; i > 0; i--)
+	{
+		cout << "-";
+	}
+	cout << endl;
+
+	for (int i = 0; i < _height; i++)
+	{
+		cout << "|";
+		for (int j = 0; j < _width; j++)
+		{
+			switch (_map[i][j])
+			{
+				case BLOCKED:
+				{
+					cout << "X";
+					break;
+				}
+				case CLEAR:
+				{
+					cout << ".";
+					break;
+				}
+				case POSITION:
+				{
+					cout << "O";
+					break;
+				}
+				case END:
+				{
+					cout << "*";
+					break;
+				}
+			}
+		}
+		cout << "|";
+
+		cout << endl;
+	}
+
+	for (int i = _width + 2; i > 0; i--)
+	{
+		cout << "-";
+	}
+	cout << endl;
+}
+
+
 
 SearchNode* Grid2D::GetStart()
 {

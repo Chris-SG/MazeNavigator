@@ -20,6 +20,8 @@ int main(int argc, char* argv[])
 	{
 		MapParser lMap(argv[1]);
 		lMap.ReadFile(lNavigator);
+
+		lNavigator->GetMap()->PrintMap();
 		DepthFirstSearch* lDFS = new DepthFirstSearch();
 		lNavigator->Navigate(lDFS);
 	}

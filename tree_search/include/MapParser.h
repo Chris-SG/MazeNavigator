@@ -22,5 +22,5 @@ private:
 	std::fstream* _file; //The file which we will read the map from
 public:
 	MapParser(std::string fileName);
-	void ReadFile(Navigator* to);
+	void ReadFile(Navigator*& to);
 };

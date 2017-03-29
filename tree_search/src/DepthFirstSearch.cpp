@@ -1,5 +1,5 @@
 #include "../include/DepthFirstSearch.h"
-
+#include <iostream>
 using namespace std;
 
 /// <summary>
@@ -18,6 +18,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 {
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
+	cout << "Start node is at " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 
 	// Work out what direction we want to be moving
 	GetDirectionOrder(map->GetEnd()->GetPos());
@@ -26,6 +27,7 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 	/* consider adding a check so we can't get stuck (will probably crash) */
 	while (_currentNode != map->GetEnd())
 	{
+		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 		// Each node can move to 4 different positions (L/R U/D)
 		for (int i = 0; i < 4; i++)
 		{
@@ -107,6 +109,8 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 				}
 			}
 		}
+
+		cout << "Searched " << _searchedNodes.size() << ". List to visit has " << _searchStack.size() << endl;
 	
 		_searchedNodes.push_back(_currentNode); // We can add our current node to the list of nodes we have searched
 		_currentNode = _searchStack.back(); // And get a new node to visit
