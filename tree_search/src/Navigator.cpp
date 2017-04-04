@@ -22,7 +22,9 @@ Navigator::Navigator(int width, int height)
 /// </summary>
 Navigator::~Navigator()
 {
+	cout << "Deleting navigator." << endl;
 	delete _map;
+	cout << "Navigator deleted." << endl;
 }
 
 /// <summary>
@@ -45,4 +47,12 @@ void Navigator::Navigate(TreeSearch* searchModule)
 	path = searchModule->Solve(_map);
 
 	cout << "solved path!" << endl;
+	cout << "Path length is: " << path.size() << "." << endl;
+
+	searchModule->UpdateMap(_map);
+
+	_map->PrintMap();
+
+	searchModule->DeleteSearchedNodes();
+	searchModule->DeleteSearchStack();
 }

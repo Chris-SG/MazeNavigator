@@ -3,7 +3,7 @@
 
 void TreeSearch::GetDirectionOrder(Point2D end)
 {
-	Point2D lStart = _currentNode->GetPos();
+	/*Point2D lStart = _currentNode->GetPos();
 	int lX = std::abs(lStart.x + end.x);
 	int lY = std::abs(lStart.y + end.y);
 
@@ -38,5 +38,44 @@ void TreeSearch::GetDirectionOrder(Point2D end)
 		{
 			std::swap(_directionOrder[0], _directionOrder[3]);
 		}
+	}*/
+
+	_directionOrder[0] = UP;
+	_directionOrder[1] = LEFT;
+	_directionOrder[2] = DOWN;
+	_directionOrder[3] = RIGHT;
+}
+
+void TreeSearch::DeleteSearchedNodes()
+{
+	for (int i = _searchedNodes.size()-1; i >= 0; --i)
+	{
+		delete _searchedNodes.at(i);
+	}
+}
+
+void TreeSearch::DeleteSearchStack()
+{
+	for (int i = _searchStack.size()-1; i >= 0; --i)
+	{
+		delete _searchStack.at(i);
+	}
+}
+
+void TreeSearch::UpdateMap(Grid2D* map)
+{
+	for (int i = 0; i < _searchedNodes.size(); i++)
+	{
+		map->SetPosition(_searchedNodes.at(i)->GetPos(), SEARCHED);
+	}
+
+	for (int i = 0; i < _searchStack.size(); i++)
+	{
+		map->SetPosition(_searchStack.at(i)->GetPos(), QUEUED);
+	}
+
+	for (int i = 0; i < _path.size(); i++)
+	{
+		map->SetPosition(_path.at(i)->GetPos(), PATH);
 	}
 }

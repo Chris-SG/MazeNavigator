@@ -6,6 +6,9 @@
 #define BLOCKED 1
 #define POSITION 2
 #define END 3
+#define PATH 6
+#define SEARCHED 7
+#define QUEUED 8
 
 /// <summary>
 /// A Grid2D holds information relating to a provided map, including
@@ -14,7 +17,7 @@
 class Grid2D
 {
 private:
-	int** _map;
+	char** _map;
 	int _width, _height;
 
 	SearchNode* _startNode;
@@ -27,6 +30,7 @@ public:
 	void AddStart(int x, int y);
 	void AddEnd(int x, int y);
 	int AtPos(Point2D loc);
+	void SetPosition(Point2D loc, int type);
 
 	void PrintMap();
 

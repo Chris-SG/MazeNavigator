@@ -11,12 +11,12 @@ Grid2D::Grid2D(int width, int height)
 	_height = height;
 
 	//Create an array of arrays to represent height
-	_map = new int*[height];
+	_map = new char*[height];
 	//Iterate over all rows
 	for (int i = 0; i < height; i++)
 	{
 		//Create an array to represent width
-		_map[i] = new int[width];
+		_map[i] = new char[width];
 
 		//Iterate over all columns
 		for (int j = 0; j < width; j++)
@@ -29,15 +29,20 @@ Grid2D::Grid2D(int width, int height)
 
 Grid2D::~Grid2D()
 {
+	cout << "Deleting grid." << endl;
 	delete _startNode;
 	delete _endNode;
 
-	for (int i = 0; i < _width; i++)
+	cout << "Grid nodes deleted." << endl;
+
+	for (int i = 0; i < _height; i++)
 	{
 		delete[] _map[i];
 	}
 
 	delete[] _map;
+
+	cout << "Grid deleted." << endl;
 }
 
 /// <summary>
@@ -140,6 +145,21 @@ void Grid2D::PrintMap()
 					cout << "*";
 					break;
 				}
+				case PATH:
+				{
+					cout << "p";
+					break;
+				}
+				case SEARCHED:
+				{
+					cout << "s";
+					break;
+				}
+				case QUEUED:
+				{
+					cout << "q";
+					break;
+				}
 			}
 		}
 		cout << "|";
@@ -164,4 +184,14 @@ SearchNode* Grid2D::GetStart()
 SearchNode* Grid2D::GetEnd()
 {
 	return _endNode;
+}
+
+void Grid2D::SetPosition(Point2D pos, int type)
+{
+	if (0 > pos.x || _width <= pos.x || 0 > pos.y || _height <= pos.y)
+	{
+		return;
+	}
+
+	_map[pos.y][pos.x] = type;
 }

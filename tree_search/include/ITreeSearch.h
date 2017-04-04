@@ -18,9 +18,15 @@ private:
 
 public:
 	virtual std::vector<SearchNode*> Solve(Grid2D* map) = 0;
+
+	void DeleteSearchedNodes();
+	void DeleteSearchStack();
+
+	void UpdateMap(Grid2D* map);
 protected:	
 	std::vector<SearchNode*> _searchedNodes; //The nodes that have been searched, to avoid loops
 	std::vector<SearchNode*> _searchStack; //The nodes that are still yet to be searched
+	std::vector<SearchNode*> _path; //Final path
 	SearchNode* _currentNode; //Current node the search is located at
 
 	int _directionOrder[4]; //Used to store the order in which a search is made (for DFS/BFS)

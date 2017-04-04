@@ -1,5 +1,6 @@
 #include "../include/DepthFirstSearch.h"
 #include <iostream>
+#include "../include/Timer.h"
 using namespace std;
 
 /// <summary>
@@ -16,6 +17,9 @@ DepthFirstSearch::DepthFirstSearch()
 /// <param name="map">The map that we wish to solve</param>
 std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 {
+	ChronoTimer* timer = new ChronoTimer();
+	timer->StartTimer();
+
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
 
@@ -104,6 +108,20 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 					}
 				}
 
+				// Also check if we plan to visit the node.
+				if (!lVisited)
+				{
+					for (int i = 0; i < _searchStack.size(); i++)
+					{
+						if (_searchStack[i]->IsEqual(*lToPush))
+						{
+							lVisited = true;
+							delete lToPush;
+							break;
+						}
+					}
+				}
+
 				// If we haven't visited the node
 				if (!lVisited)
 				{
@@ -121,32 +139,28 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 
 	cout << "Path found!" << endl;
 
-	vector<SearchNode*> lPath; //This will hold the full maze path
-
 	// The start node will return nullptr as the previous node, so we can
 	// use this to check if we are back at the start
 	while (_currentNode != nullptr)
 	{
-		lPath.push_back(_currentNode); // add the node to our correct path
+		for (int i = 0; i < _searchedNodes.size(); i++)
+		{
+			if (_currentNode->IsEqual(*_searchedNodes.at(i)))
+			{
+				cout << "Removed a node" << endl;
+				_searchedNodes.erase(_searchedNodes.begin() + i);
+			}
+		}
+		_path.push_back(_currentNode); // add the node to our correct path
 		_currentNode = _currentNode->GetPrevious(); // get the previous node in the path
 	}
+	cout << "a" << endl;
 
 	cout << "Path added" << endl;
 
-	// We need to delete all our unused nodes
-	// Will need to add a check so we don't delete our lPath nodes
-	for (int i = 0; i < _searchedNodes.size(); i++)
-	{
-		delete _searchedNodes[i]; //Delete node
-	}
-	_searchedNodes.clear(); //Clear vector
-
-	cout << "Cleared nodes" << endl;
-
-	/*
-	/// Still need to delete searchStack
-	*/
+	timer->EndTimer();
+	cout << "Path found in " << timer->PrintTime_ms() << "." << endl;
 
 	// Return our successful path
-	return lPath;
+	return _path;
 }
