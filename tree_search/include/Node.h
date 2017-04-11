@@ -21,8 +21,8 @@ public:
 	~SearchNode();
 
 	Point2D GetPos() const { return _position; };
-	int GetDistance_Travelled(const SearchNode& start);
-	int GetDistance_Remaining(int endX, int endY);
+	int GetDistance_Travelled();
+	int GetDistance_Remaining(Point2D end);
 
 	SearchNode* GetPrevious() { return _previousNode; };
 

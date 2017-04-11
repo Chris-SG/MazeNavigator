@@ -38,12 +38,12 @@ bool SearchNode::operator!=(const SearchNode& otherNode)
 	return !(*this == otherNode);
 }
 
-int SearchNode::GetDistance_Travelled(const SearchNode& start)
+int SearchNode::GetDistance_Travelled()
 {
 	int ret = 0;
-	if (*this != start && &_previousNode != nullptr)
+	if (_previousNode != nullptr)
 	{
-		ret = 1 + _previousNode->GetDistance_Travelled(start);
+		ret = 1 + _previousNode->GetDistance_Travelled();
 	}
 
 	return ret;
@@ -54,7 +54,7 @@ bool SearchNode::IsEqual(const SearchNode& otherNode)
 	return *this == otherNode;
 }
 
-int SearchNode::GetDistance_Remaining(int endX, int endY)
+int SearchNode::GetDistance_Remaining(Point2D end)
 {
-	return (abs(endX - _position.x) + abs(endY - _position.y));
+	return (abs(end.x - _position.x) + abs(end.y - _position.y));
 }

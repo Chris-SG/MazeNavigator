@@ -147,24 +147,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AStarSearch.cpp" />
+    <ClCompile Include="src\BreadthFirstSearch.cpp" />
     <ClCompile Include="src\DepthFirstSearch.cpp" />
+    <ClCompile Include="src\GreedyBestFirstSearch.cpp" />
     <ClCompile Include="src\Grid2D.cpp" />
     <ClCompile Include="src\ITreeSearch.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MapParser.cpp" />
     <ClCompile Include="src\Navigator.cpp" />
     <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\TextLogger.cpp" />
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AdditionalTypes.h" />
+    <ClInclude Include="include\AStarSearch.h" />
     <ClInclude Include="include\BreadthFirstSearch.h" />
     <ClInclude Include="include\DepthFirstSearch.h" />
+    <ClInclude Include="include\GreedyBestFirstSearch.h" />
     <ClInclude Include="include\Grid2D.h" />
     <ClInclude Include="include\ITreeSearch.h" />
     <ClInclude Include="include\MapParser.h" />
     <ClInclude Include="include\Navigator.h" />
     <ClInclude Include="include\Node.h" />
+    <ClInclude Include="include\TextLogger.h" />
     <ClInclude Include="include\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
