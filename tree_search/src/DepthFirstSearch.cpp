@@ -147,7 +147,6 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 		{
 			if (_currentNode->IsEqual(*_searchedNodes.at(i)))
 			{
-				cout << "Removed a node" << endl;
 				_searchedNodes.erase(_searchedNodes.begin() + i);
 			}
 		}

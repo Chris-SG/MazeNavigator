@@ -2,8 +2,8 @@
 #include "ITreeSearch.h"
 
 /// <summary>
-/// BreadthFirstSearch is a search algorithm in which a node is followed
-/// all the way to the end before following another node's path
+/// BreadthFirstSearch is a search algorithm in which a path is
+/// expanded on each level prior to going deeeper
 /// </summary>
 class BreadthFirstSearch : public TreeSearch
 {
