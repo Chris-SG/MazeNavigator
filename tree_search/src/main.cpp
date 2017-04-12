@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "../include/MapParser.h"
 #include "../include/AStarSearch.h"
@@ -13,6 +14,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	stringstream lSs;
 	// Initialize logging system
 	// Consider moving to parameters (eg. --l F)
 	if (argc >= 4)
@@ -88,7 +90,9 @@ int main(int argc, char* argv[])
 	}
 	catch (exception& e)
 	{
-		TextLogger::LOG(strcat("Exception occurred: ", e.what()), LOGGING_FATAL);
+		lSs.clear();
+		lSs << "Exception occurred: " << e.what();
+		TextLogger::LOG(lSs.str(), LOGGING_FATAL);
 		cout << "An exception occurred: " << e.what() << endl;
 
 		return 2;
@@ -118,7 +122,9 @@ int main(int argc, char* argv[])
 	lFileName += argv[2];
 	lFileName += ".bmp";
 
-	TextLogger::LOG(strcat("Writing image to ", lFileName.c_str()), LOGGING_DEFAULT);
+	lSs.clear();
+	lSs << "Writing image to " << lFileName;
+	TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
 	ImageWriter::WriteImage(lFileName, lNavigator->GetMap()->GetGrid(), lColours, lNavigator->GetMap()->GridSize().x, lNavigator->GetMap()->GridSize().y, IMAGESIZEPERNODE);
 
 

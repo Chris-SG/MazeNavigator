@@ -11,6 +11,11 @@ AStarSearch::AStarSearch()
 
 }
 
+AStarSearch::~AStarSearch()
+{
+
+}
+
 /// <summary>
 /// Attempts to solve the maze using the Greedy Best First Search Algorithm
 /// <summary>
@@ -23,7 +28,7 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
 
-								   // While directions aren't needed for GBFS, we still need 4 directions when discovering nodes
+	// While directions aren't needed for GBFS, we still need 4 directions when discovering nodes
 	GetDirectionOrder(map->GetEnd()->GetPos());
 	Point2D lEnd = map->GetEnd()->GetPos();
 
@@ -33,63 +38,11 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 	{
 		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
 		// Each node can move to 4 different positions (L/R U/D)
-		for (int i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			Point2D lPos = _currentNode->GetPos(); //Store the postion of our current node
 
-												   // Switch depending on which direction we go
-												   // Creates a node at the new postion if it is not BLOCKED
-			switch (_directionOrder[i])
-			{
-			case LEFT:
-				lPos.x--;
-				if (map->AtPos(lPos) != BLOCKED)
-				{
-					lToPush = new SearchNode(lPos, _currentNode);
-					cout << "Left was " << i << endl;
-				}
-				else
-				{
-					lToPush = nullptr;
-				}
-				break;
-			case RIGHT:
-				lPos.x++;
-				if (map->AtPos(lPos) != BLOCKED)
-				{
-					lToPush = new SearchNode(lPos, _currentNode);
-					cout << "Right was " << i << endl;
-				}
-				else
-				{
-					lToPush = nullptr;
-				}
-				break;
-			case UP:
-				lPos.y--;
-				if (map->AtPos(lPos) != BLOCKED)
-				{
-					lToPush = new SearchNode(lPos, _currentNode);
-					cout << "Up was " << i << endl;
-				}
-				else
-				{
-					lToPush = nullptr;
-				}
-				break;
-			case DOWN:
-				lPos.y++;
-				if (map->AtPos(lPos) != BLOCKED)
-				{
-					lToPush = new SearchNode(lPos, _currentNode);
-					cout << "Down was " << i << endl;
-				}
-				else
-				{
-					lToPush = nullptr;
-				}
-				break;
-			}
+			GetNodeToPush(lToPush, _directionOrder[i], lPos, map); // Get which node we need to add to our vector
 
 			// We don't want to visit nullptr so skip if we have one
 			if (lToPush != nullptr)
@@ -97,7 +50,7 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 				bool lVisited = false;
 				// Iterate over all our visited nodes
 				// Perhaps use an iterator instead to improve performance on large maps
-				for (int i = 0; i < _searchedNodes.size(); i++)
+				for (size_t i = 0; i < _searchedNodes.size(); i++)
 				{
 					// If we have already visited the node before...
 					if (_searchedNodes[i]->IsEqual(*lToPush))
@@ -112,7 +65,7 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 				// Also check if we plan to visit the node.
 				if (!lVisited)
 				{
-					for (int i = 0; i < _searchStack.size(); i++)
+					for (size_t i = 0; i < _searchStack.size(); i++)
 					{
 						if (_searchStack[i]->IsEqual(*lToPush))
 						{
@@ -137,10 +90,10 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 		_currentNode = _searchStack.front();
 
 		// Iterate through all the searchable nodes
-		for (int i = 1; i < _searchStack.size(); i++)
+		for (size_t i = 1; i < _searchStack.size(); i++)
 		{
 			// Is the node closer to the goal than we are?
-			if (_currentNode->GetDistance_Remaining(lEnd) + _currentNode->GetDistance_Travelled() > _searchStack[i]->GetDistance_Remaining(lEnd) + _searchStack[i]->GetDistance_Travelled())
+			if (_currentNode->GetDistance_Remaining(lEnd) + _currentNode->GetDistance_Travelled() >= _searchStack[i]->GetDistance_Remaining(lEnd) + _searchStack[i]->GetDistance_Travelled())
 			{
 				_currentNode = _searchStack[i];
 			}
@@ -156,7 +109,7 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 	// use this to check if we are back at the start
 	while (_currentNode != nullptr)
 	{
-		for (int i = 0; i < _searchedNodes.size(); i++)
+		for (size_t i = 0; i < _searchedNodes.size(); i++)
 		{
 			if (_currentNode->IsEqual(*_searchedNodes.at(i)))
 			{

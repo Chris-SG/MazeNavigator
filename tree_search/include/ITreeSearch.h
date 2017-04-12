@@ -33,5 +33,6 @@ protected:
 
 	bool AtEnd(SearchNode* endNode) { return _currentNode == endNode; }
 	void GetDirectionOrder(Point2D end);
+	void GetNodeToPush(SearchNode*& toPush, int direction, Point2D pos, Grid2D* map);
 };
 

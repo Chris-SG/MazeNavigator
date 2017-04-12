@@ -31,8 +31,12 @@ void MapParser::ReadFile(Navigator*& to)
 	int lLinesRead = 0; // Store how many lines we have read
 
 	// Continue while we can still get a new line from the file
-	while (getline(*_file, lReadLine))
+	while (true)
 	{
+		if (!getline(*_file, lReadLine))
+		{
+			break;
+		}
 		vector<string> lLineBroken;
 		size_t pos;
 		cout << lReadLine << endl; // This will tell us what line we are reading. Removable?

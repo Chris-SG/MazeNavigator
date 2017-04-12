@@ -64,18 +64,63 @@ void TreeSearch::DeleteSearchStack()
 
 void TreeSearch::UpdateMap(Grid2D* map)
 {
-	for (int i = 0; i < _searchedNodes.size(); i++)
+	for (size_t i = 0; i < _searchedNodes.size(); i++)
 	{
 		map->SetPosition(_searchedNodes.at(i)->GetPos(), SEARCHED);
 	}
 
-	for (int i = 0; i < _searchStack.size(); i++)
+	for (size_t i = 0; i < _searchStack.size(); i++)
 	{
 		map->SetPosition(_searchStack.at(i)->GetPos(), QUEUED);
 	}
 
-	for (int i = 1; i < _path.size()-1; i++)
+	for (size_t i = 1; i < _path.size()-1; i++)
 	{
 		map->SetPosition(_path.at(i)->GetPos(), PATH);
+	}
+}
+
+void TreeSearch::GetNodeToPush(SearchNode*& toPush, int direction, Point2D pos, Grid2D* map)
+{
+	switch (direction)
+	{
+	case LEFT:
+		pos.x--;
+		if (map->AtPos(pos) != BLOCKED)
+		{
+			toPush = new SearchNode(pos, _currentNode);
+		}
+		else
+		{
+			toPush = nullptr;
+		}
+		break;
+	case RIGHT:
+		pos.x++;
+		if (map->AtPos(pos) != BLOCKED)
+		{
+			toPush = new SearchNode(pos, _currentNode);
+		}
+		else
+		{
+			toPush = nullptr;
+		}
+		break;
+	case UP:
+		pos.y--;
+		if (map->AtPos(pos) != BLOCKED)
+		{
+			toPush = new SearchNode(pos, _currentNode);
+		}
+		else toPush = nullptr;
+		break;
+	case DOWN:
+		pos.y++;
+		if (map->AtPos(pos) != BLOCKED)
+		{
+			toPush = new SearchNode(pos, _currentNode);
+		}
+		else toPush = nullptr;
+		break;
 	}
 }

@@ -60,8 +60,6 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 	int lBitmapSize = 3 * x*y*pxsize + (lPadding * y * pxsize);
 	int lFilesize = 14 + 40 + lBitmapSize;
 
-	cout << "filesize " << lFilesize << " and bitmap size " << lBitmapSize;
-
 	// Bitmap must be stored as little-endian
 	lInfoHeader[20] = (unsigned char)(lBitmapSize);
 	lInfoHeader[21] = (unsigned char)(lBitmapSize>>8);
@@ -81,13 +79,10 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 	lHeader[11] = (unsigned char)(lOffset>>8);
 	lHeader[12] = (unsigned char)(lOffset>>16);
 	lHeader[13] = (unsigned char)(lOffset>>24);
-
-	cout << "Writing image file to " << fileName << "." << endl;
 	
+	// Write headers to file
 	lFile->write(reinterpret_cast<char*>(&lHeader), sizeof(lHeader));
-	cout << "Wrote header" << endl;
 	lFile->write(reinterpret_cast<char*>(&lInfoHeader), sizeof(lInfoHeader));
-	cout << "Wrote info header" << endl;
 
 	unsigned char lToWrite[3] = { 0,0,0 };
 	char lZero = 0;

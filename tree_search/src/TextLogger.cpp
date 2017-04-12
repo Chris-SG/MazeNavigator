@@ -39,20 +39,14 @@ namespace TextLogger
 		switch (logLevel)
 		{
 		case LOGGING_FATAL:
-		{
-			gLogFile << logName << endl << "LOGGING MODE: FATAL" << endl;
+			gLogFile << logName << endl << "LOGGING MODE: FATAL" << endl << endl;
 			break;
-		}
 		case LOGGING_DEFAULT:
-		{
-			gLogFile << logName << endl << "LOGGING MODE: DEFAULT" << endl;
+			gLogFile << logName << endl << "LOGGING MODE: DEFAULT" << endl << endl;
 			break;
-		}
 		case LOGGING_DEBUG:
-		{
-			gLogFile << logName << endl << "LOGGING MODE: DEBUG" << endl;
+			gLogFile << logName << endl << "LOGGING MODE: DEBUG" << endl << endl;
 			break;
-		}
 		}
 	}
 

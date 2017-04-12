@@ -10,5 +10,6 @@ class AStarSearch : public TreeSearch
 private:
 public:
 	AStarSearch();
+	~AStarSearch();
 	virtual std::vector<SearchNode*> Solve(Grid2D* map);
 };

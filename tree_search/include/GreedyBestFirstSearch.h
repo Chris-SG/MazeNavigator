@@ -10,5 +10,6 @@ class GreedyBestFirstSearch : public TreeSearch
 private:
 public:
 	GreedyBestFirstSearch();
+	~GreedyBestFirstSearch();
 	virtual std::vector<SearchNode*> Solve(Grid2D* map);
 };

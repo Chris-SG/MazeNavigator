@@ -10,5 +10,6 @@ class BreadthFirstSearch : public TreeSearch
 private:
 public:
 	BreadthFirstSearch();
+	~BreadthFirstSearch();
 	virtual std::vector<SearchNode*> Solve(Grid2D* map);
 };
