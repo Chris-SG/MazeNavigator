@@ -1,8 +1,10 @@
 #include "../include/Image.h"
+#include "../include/Timer.h"
 
 #include <fstream>
 
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -12,11 +14,15 @@ using namespace std;
 /// </summary>
 /// <param name="filename">File to write</param>
 /// <param name="map">A 2d map grid</param>
-void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* colours, int x, int y)
+void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* colours, int x, int y, int pxsize)
 {
+	ChronoTimer* timer = new ChronoTimer();
+	timer->StartTimer();
+
 	fstream* lFile = new fstream(fileName, fstream::out, fstream::binary);
 
-	char lPadding = (x * 3) % 4;
+	char lPadding = ((x * 3 * pxsize) % 4);
+	//if (lPadding == 4) lPadding = 0;
 	// 2 bytes indentify as bmp
 	// 4 bytes filesize
 	// 2 bytes reserved
@@ -34,20 +40,24 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 	// 4 bytes for print resolution
 	// 4 bytes for colours in palette
 	// 4 bytes for important colours
-	unsigned char lInfoHeader[40] = { 40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, (unsigned char)(IMAGESIZEPERNODE), (unsigned char)(IMAGESIZEPERNODE >> 8), 0,0,0,0, 0,0,0,0, 4,0,0,0, 4,0,0,0, 0,0,0,0, 0,0,0,0 };
+	unsigned char lInfoHeader[40] = { 40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0, 0,0,0,0, 0,0,0,0, 4,0,0,0, 4,0,0,0, 0,0,0,0, 0,0,0,0 };
 
-	lInfoHeader[4] = (unsigned char)(x);
-	lInfoHeader[5] = (unsigned char)(x >> 8);
-	lInfoHeader[6] = (unsigned char)(x >> 16);
-	lInfoHeader[7] = (unsigned char)(x >> 24);
+	// width of image
+	int lShiftX = x*pxsize;
+	lInfoHeader[4] = (unsigned char)(lShiftX);
+	lInfoHeader[5] = (unsigned char)(lShiftX >> 8);
+	lInfoHeader[6] = (unsigned char)(lShiftX >> 16);
+	lInfoHeader[7] = (unsigned char)(lShiftX >> 24);
 
-	lInfoHeader[8] = (unsigned char)(y);
-	lInfoHeader[9] = (unsigned char)(y >> 8);
-	lInfoHeader[10] = (unsigned char)(y >> 16);
-	lInfoHeader[11] = (unsigned char)(y >> 24);
+	// height of image
+	int lShiftY = y*pxsize;
+	lInfoHeader[8] = (unsigned char)(lShiftY);
+	lInfoHeader[9] = (unsigned char)(lShiftY >> 8);
+	lInfoHeader[10] = (unsigned char)(lShiftY >> 16);
+	lInfoHeader[11] = (unsigned char)(lShiftY >> 24);
 
 	// File size calculated by size of header, info header, and 3 bytes per pixel (rgb)
-	int lBitmapSize = 3 * x*y + (lPadding * y);
+	int lBitmapSize = 3 * x*y*pxsize + (lPadding * y * pxsize);
 	int lFilesize = 14 + 40 + lBitmapSize;
 
 	cout << "filesize " << lFilesize << " and bitmap size " << lBitmapSize;
@@ -82,26 +92,29 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 	unsigned char lToWrite[3] = { 0,0,0 };
 	char lZero = 0;
 	// Change this to using a colour list passed to the function, allows use in more than just this program :)
-	for (int i = 0; i < y; i++)
+	for (int i = y-1; i >= 0; i--)
 	{
-		for (int j = 0; j < x; j++)
+		for (int i2 = 0; i2 < pxsize; i2++)
 		{
-			colour lColour = colours->at(map[i][j]);
-			lToWrite[0] = lColour.b;
-			lToWrite[1] = lColour.g;
-			lToWrite[2] = lColour.r;
+			for (int j = 0; j < x; j++)
+			{
+				colour lColour = colours->at(map[i][j]);
+				lToWrite[0] = lColour.b;
+				lToWrite[1] = lColour.g;
+				lToWrite[2] = lColour.r;
 
-			lFile->write(reinterpret_cast<char*>(&lToWrite), sizeof(lToWrite));
-		}
+				for (int k = 0; k < pxsize; k++) lFile->write(reinterpret_cast<char*>(&lToWrite), sizeof(lToWrite));
+			}
 
-		for (int j = 0; j < lPadding; j++)
-		{
-			cout << "writing padding" << endl;
-			lFile->write(&lZero, sizeof(char));
+			for (int j = 0; j < lPadding; j++) lFile->write(&lZero, sizeof(char));
 		}
 	}
 
 	cout << "Wrote colours" << endl;
 
 	lFile->close();
+
+	timer->EndTimer();
+	cout << "Image generated in " << timer->PrintTime_ms() << "." << endl;
+	delete timer;
 }

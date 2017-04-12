@@ -3,7 +3,7 @@
 #include "Grid2D.h"
 #include <vector>
 
-#define IMAGESIZEPERNODE 8
+#define IMAGESIZEPERNODE 32
 
 struct colour
 {
@@ -14,5 +14,5 @@ struct colour
 
 namespace ImageWriter
 {
-	void WriteImage(std::string fileName, char** map, std::vector<colour>* colours, int x, int y);
+	void WriteImage(std::string fileName, char** map, std::vector<colour>* colours, int x, int y, int pxsize);
 }

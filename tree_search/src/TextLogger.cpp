@@ -1,5 +1,63 @@
+#include "../include/TextLogger.h"
+
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+#include <iostream>
+
+using namespace std;
 
 namespace TextLogger
 {
+	int gLoggingLevel = 0;
+	fstream gLogFile;
 
+	void LOG(string logText, int logLevel)
+	{
+		if (logLevel >= gLoggingLevel)
+		{
+			gLogFile << logText << endl;
+			cout << logText << endl;
+		}
+	}
+
+	void OpenLog(int logLevel, string logName)
+	{
+		if (logName == "none")
+		{
+			time_t lTime = std::time(nullptr);
+			struct tm lTimeInfo;
+			localtime_s(&lTimeInfo, &lTime);
+
+			stringstream lSs;
+			lSs << put_time(&lTimeInfo, "%Y-%m-%d %H-%M-%S.log");
+			logName = lSs.str();
+		}
+		gLoggingLevel = logLevel;
+		gLogFile.open(logName, fstream::out);
+
+		switch (logLevel)
+		{
+		case LOGGING_FATAL:
+		{
+			gLogFile << logName << endl << "LOGGING MODE: FATAL" << endl;
+			break;
+		}
+		case LOGGING_DEFAULT:
+		{
+			gLogFile << logName << endl << "LOGGING MODE: DEFAULT" << endl;
+			break;
+		}
+		case LOGGING_DEBUG:
+		{
+			gLogFile << logName << endl << "LOGGING MODE: DEBUG" << endl;
+			break;
+		}
+		}
+	}
+
+	void CloseLog()
+	{
+		gLogFile.close();
+	}
 }

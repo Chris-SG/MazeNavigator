@@ -74,7 +74,7 @@ void TreeSearch::UpdateMap(Grid2D* map)
 		map->SetPosition(_searchStack.at(i)->GetPos(), QUEUED);
 	}
 
-	for (int i = 0; i < _path.size(); i++)
+	for (int i = 1; i < _path.size()-1; i++)
 	{
 		map->SetPosition(_path.at(i)->GetPos(), PATH);
 	}
