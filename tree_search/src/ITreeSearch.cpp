@@ -124,3 +124,19 @@ void TreeSearch::GetNodeToPush(SearchNode*& toPush, int direction, Point2D pos, 
 		break;
 	}
 }
+
+void TreeSearch::GetPath()
+{
+	while (_currentNode != nullptr)
+	{
+		for (size_t i = 0; i < _searchedNodes.size(); i++)
+		{
+			if (_currentNode->IsEqual(*_searchedNodes.at(i)))
+			{
+				_searchedNodes.erase(_searchedNodes.begin() + i);
+			}
+		}
+		_path.push_back(_currentNode); // add the node to our correct path
+		_currentNode = _currentNode->GetPrevious(); // get the previous node in the path
+	}
+}

@@ -1,6 +1,7 @@
 #include "../include/BreadthFirstSearch.h"
 #include <iostream>
 #include "../include/Timer.h"
+#include "../include/TextLogger.h"
 using namespace std;
 
 /// <summary>
@@ -92,26 +93,14 @@ std::vector<SearchNode*> BreadthFirstSearch::Solve(Grid2D* map)
 	cout << "Path found!" << endl;
 
 	// The start node will return nullptr as the previous node, so we can
-	// use this to check if we are back at the start
-	while (_currentNode != nullptr)
-	{
-		for (size_t i = 0; i < _searchedNodes.size(); i++)
-		{
-			if (_currentNode->IsEqual(*_searchedNodes.at(i)))
-			{
-				_searchedNodes.erase(_searchedNodes.begin() + i);
-			}
-		}
-		_path.push_back(_currentNode); // add the node to our correct path
-		_currentNode = _currentNode->GetPrevious(); // get the previous node in the path
-	}
+	GetPath();
 	cout << "a" << endl;
 
 	cout << "Path added" << endl;
 
 	timer->EndTimer();
-	cout << "Path found in " << timer->PrintTime_ms() << "." << endl;
 
+	TextLogger::LOG("Path found in " + timer->PrintTime_ms(), LOGGING_DEFAULT);
 	// Return our successful path
 	return _path;
 }
