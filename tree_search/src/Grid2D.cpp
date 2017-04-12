@@ -86,6 +86,19 @@ void Grid2D::AddStart(int x, int y)
 	_map[y][x] = POSITION;
 }
 
+char** Grid2D::GetGrid()
+{
+	return _map;
+}
+
+Point2D Grid2D::GridSize()
+{
+	Point2D ret;
+	ret.x = _width;
+	ret.y = _height;
+	return  ret;
+}
+
 /// <summary>
 /// Add end and create end node
 /// </summary>

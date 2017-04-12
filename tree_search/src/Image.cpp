@@ -2,6 +2,8 @@
 
 #include <fstream>
 
+#include <iostream>
+
 using namespace std;
 
 /// <summary>
@@ -10,11 +12,11 @@ using namespace std;
 /// </summary>
 /// <param name="filename">File to write</param>
 /// <param name="map">A 2d map grid</param>
-void WriteImage(std::string fileName, char** map)
+void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* colours, int x, int y)
 {
-	fstream* lFile = new fstream(fileName, fstream::out);
-	int lWidth = sizeof(map) / sizeof(map[0]);
-	int lHeight = sizeof(map[0]) / sizeof(map[0][0]);
+	fstream* lFile = new fstream(fileName, fstream::out, fstream::binary);
+
+	char lPadding = (x * 3) % 4;
 	// 2 bytes indentify as bmp
 	// 4 bytes filesize
 	// 2 bytes reserved
@@ -32,21 +34,23 @@ void WriteImage(std::string fileName, char** map)
 	// 4 bytes for print resolution
 	// 4 bytes for colours in palette
 	// 4 bytes for important colours
-	unsigned char lInfoHeader[40] = { 28,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, (unsigned char)(IMAGESIZEPERNODE), (unsigned char)(IMAGESIZEPERNODE >> 8), 0,0,0,0, 0,0,0,0, 4,0,0,0, 0,0,0,0, 0,0,0,0 };
+	unsigned char lInfoHeader[40] = { 40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, (unsigned char)(IMAGESIZEPERNODE), (unsigned char)(IMAGESIZEPERNODE >> 8), 0,0,0,0, 0,0,0,0, 4,0,0,0, 4,0,0,0, 0,0,0,0, 0,0,0,0 };
 
-	lInfoHeader[4] = (unsigned char)(lWidth);
-	lInfoHeader[5] = (unsigned char)(lWidth >> 8);
-	lInfoHeader[6] = (unsigned char)(lWidth >> 16);
-	lInfoHeader[7] = (unsigned char)(lWidth >> 24);
+	lInfoHeader[4] = (unsigned char)(x);
+	lInfoHeader[5] = (unsigned char)(x >> 8);
+	lInfoHeader[6] = (unsigned char)(x >> 16);
+	lInfoHeader[7] = (unsigned char)(x >> 24);
 
-	lInfoHeader[8] = (unsigned char)(lHeight);
-	lInfoHeader[9] = (unsigned char)(lHeight >> 8);
-	lInfoHeader[10] = (unsigned char)(lHeight >> 16);
-	lInfoHeader[11] = (unsigned char)(lHeight >> 24);
+	lInfoHeader[8] = (unsigned char)(y);
+	lInfoHeader[9] = (unsigned char)(y >> 8);
+	lInfoHeader[10] = (unsigned char)(y >> 16);
+	lInfoHeader[11] = (unsigned char)(y >> 24);
 
 	// File size calculated by size of header, info header, and 3 bytes per pixel (rgb)
-	int lBitmapSize = 3 * lWidth*lHeight;
+	int lBitmapSize = 3 * x*y + (lPadding * y);
 	int lFilesize = 14 + 40 + lBitmapSize;
+
+	cout << "filesize " << lFilesize << " and bitmap size " << lBitmapSize;
 
 	// Bitmap must be stored as little-endian
 	lInfoHeader[20] = (unsigned char)(lBitmapSize);
@@ -68,23 +72,36 @@ void WriteImage(std::string fileName, char** map)
 	lHeader[12] = (unsigned char)(lOffset>>16);
 	lHeader[13] = (unsigned char)(lOffset>>24);
 
-	for (int i = 0; i < sizeof(map) / sizeof(map[0]); i++)
+	cout << "Writing image file to " << fileName << "." << endl;
+	
+	lFile->write(reinterpret_cast<char*>(&lHeader), sizeof(lHeader));
+	cout << "Wrote header" << endl;
+	lFile->write(reinterpret_cast<char*>(&lInfoHeader), sizeof(lInfoHeader));
+	cout << "Wrote info header" << endl;
+
+	unsigned char lToWrite[3] = { 0,0,0 };
+	char lZero = 0;
+	// Change this to using a colour list passed to the function, allows use in more than just this program :)
+	for (int i = 0; i < y; i++)
 	{
-		for (int j = 0; j < sizeof(map[0]) / sizeof(map[0][0]); j++)
+		for (int j = 0; j < x; j++)
 		{
-			switch (map[i][j])
-			{
-			case CLEAR:
-				gOpen;
-			}
+			colour lColour = colours->at(map[i][j]);
+			lToWrite[0] = lColour.b;
+			lToWrite[1] = lColour.g;
+			lToWrite[2] = lColour.r;
+
+			lFile->write(reinterpret_cast<char*>(&lToWrite), sizeof(lToWrite));
+		}
+
+		for (int j = 0; j < lPadding; j++)
+		{
+			cout << "writing padding" << endl;
+			lFile->write(&lZero, sizeof(char));
 		}
 	}
-}
 
-#define CLEAR 0
-#define BLOCKED 1
-#define POSITION 2
-#define END 3
-#define PATH 6
-#define SEARCHED 7
-#define QUEUED 8
+	cout << "Wrote colours" << endl;
+
+	lFile->close();
+}

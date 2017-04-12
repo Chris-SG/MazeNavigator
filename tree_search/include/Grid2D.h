@@ -6,9 +6,9 @@
 #define BLOCKED 1
 #define POSITION 2
 #define END 3
-#define PATH 6
-#define SEARCHED 7
-#define QUEUED 8
+#define PATH 4
+#define SEARCHED 5
+#define QUEUED 6
 
 /// <summary>
 /// A Grid2D holds information relating to a provided map, including
@@ -31,6 +31,10 @@ public:
 	void AddEnd(int x, int y);
 	int AtPos(Point2D loc);
 	void SetPosition(Point2D loc, int type);
+
+	Point2D GridSize();
+
+	char** GetGrid();
 
 	void PrintMap();
 

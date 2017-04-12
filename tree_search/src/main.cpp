@@ -6,6 +6,7 @@
 #include "../include/DepthFirstSearch.h"
 #include "../include/GreedyBestFirstSearch.h"
 #include "../include/Timer.h"
+#include "../include/Image.h"
 
 using namespace std;
 
@@ -65,8 +66,33 @@ int main(int argc, char* argv[])
 		return 2;
 	}
 
-	cout << "Cleaning up..." << endl;
+	vector<colour>* lColours = new vector<colour>();
+	colour lColour;
 
+	lColour = { 255, 255, 255 }; // empty space colour
+	lColours->push_back(lColour);
+	lColour = { 0, 0, 0 }; // blocked colour
+	lColours->push_back(lColour);
+	lColour = { 128, 128, 128 }; // start position colour
+	lColours->push_back(lColour);
+	lColour = { 255, 0, 0 }; // end colour
+	lColours->push_back(lColour);
+	lColour = { 255, 255, 0 }; // path colour
+	lColours->push_back(lColour);
+	lColour = { 0, 255, 255 }; // searched nodes colour
+	lColours->push_back(lColour);
+	lColour = { 255, 0, 255 }; // unsearched nodes colour
+	lColours->push_back(lColour);
+
+	string lFileName = argv[1];
+	lFileName += "_";
+	lFileName += argv[2];
+	lFileName += ".bmp";
+
+	ImageWriter::WriteImage(lFileName, lNavigator->GetMap()->GetGrid(), lColours, lNavigator->GetMap()->GridSize().x, lNavigator->GetMap()->GridSize().y);
+
+	cout << "Cleaning up..." << endl;
+	
 	delete lNavigator;
 
 	return 0;
