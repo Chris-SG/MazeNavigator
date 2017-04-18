@@ -1,5 +1,6 @@
 #include "../include/MapParser.h"
 #include "../include/Timer.h"
+#include "../include/TextLogger.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -23,6 +24,7 @@ MapParser::MapParser(string filename)
 /// <param name="to">Navigator to attach map to</param>
 void MapParser::ReadFile(Navigator*& to)
 {
+	TextLogger::LOG("Parsing provided file", LOGGING_DEBUG);
 	// Time how long parsing the map will take
 	ChronoTimer timer;
 	timer.StartTimer();
@@ -31,19 +33,21 @@ void MapParser::ReadFile(Navigator*& to)
 	int lLinesRead = 0; // Store how many lines we have read
 
 	// Continue while we can still get a new line from the file
+	// Using while(true) to ensure all lines get parsed
 	while (true)
 	{
 		if (!getline(*_file, lReadLine))
 		{
+			TextLogger::LOG("All lines read", LOGGING_DEBUG);
 			break;
 		}
 		vector<string> lLineBroken;
 		size_t pos;
-		cout << lReadLine << endl; // This will tell us what line we are reading. Removable?
 		 
 		// If our line is contained within [] brackets
 		if (lReadLine[0]=='[' && lReadLine[lReadLine.size()-1]==']')
 		{
+			TextLogger::LOG("Found map size line: " + lReadLine, LOGGING_DEBUG);
 			// Erase the brackets, we don't need them anymore.
 			lReadLine.erase(remove(lReadLine.begin(), lReadLine.end(), '['), lReadLine.end());
 			lReadLine.erase(remove(lReadLine.begin(), lReadLine.end(), ']'), lReadLine.end());
@@ -90,19 +94,21 @@ void MapParser::ReadFile(Navigator*& to)
 				// If it is the second line to be read, we use these co-ordinates for the start
 				if (lLinesRead == 1)
 				{
+					TextLogger::LOG("Found map start: " + lReadLine, LOGGING_DEBUG);
 					to->GetMap()->AddStart(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
 				// If it is the third line to be read, we use these co-ordinates for the end
 				else if (lLinesRead == 2)
 				{
+					TextLogger::LOG("Found map end: " + lReadLine, LOGGING_DEBUG);
 					to->GetMap()->AddEnd(stoi(lLineBroken[0]), stoi(lLineBroken[1]));
 				}
-				cout << "done" << endl;
 			}
 			
 			// ALl other lines are blocked locations, so block all them off
 			else if (lLineBroken.size() == 4)
 			{
+				TextLogger::LOG("Found map wall: " + lReadLine, LOGGING_DEBUG);
 				to->GetMap()->AddLocation(stoi(lLineBroken[0]), stoi(lLineBroken[1]), stoi(lLineBroken[2]), stoi(lLineBroken[3]));
 			}
 		}
@@ -112,5 +118,5 @@ void MapParser::ReadFile(Navigator*& to)
 	}
 
 	timer.EndTimer(); // End timer
-	cout << "Map analyzed in " << timer.PrintTime_ms() << endl; // Print processing time
+	TextLogger::LOG("Map analyzed in " + timer.PrintTime_ms(), LOGGING_DEFAULT);
 }

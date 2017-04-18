@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 
+#define LOGGING_OFF -1
 #define LOGGING_FATAL 0
 #define LOGGING_DEFAULT 1
 #define LOGGING_DEBUG 2

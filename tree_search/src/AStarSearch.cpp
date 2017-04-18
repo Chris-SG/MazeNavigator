@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "../include/AStarSearch.h"
 #include <iostream>
 #include "../include/Timer.h"
@@ -23,21 +25,29 @@ AStarSearch::~AStarSearch()
 /// <param name="map">The map that we wish to solve</param>
 std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 {
+	stringstream lSs;
+	TextLogger::LOG("Beginning solve using A* algorithm", LOGGING_DEFAULT);
 	ChronoTimer* timer = new ChronoTimer();
 	timer->StartTimer();
 
+	TextLogger::LOG("Detecting map start", LOGGING_DEBUG);
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
 
 	// While directions aren't needed for GBFS, we still need 4 directions when discovering nodes
+	TextLogger::LOG("Detecting movement order", LOGGING_DEBUG);
 	GetDirectionOrder(map->GetEnd()->GetPos());
+
+	TextLogger::LOG("Detecting map end", LOGGING_DEBUG);
 	Point2D lEnd = map->GetEnd()->GetPos();
 
 	// Keep trying until we find the end
 	/* consider adding a check so we can't get stuck (will probably crash) */
 	while (!(_currentNode->IsEqual(*map->GetEnd())))
 	{
-		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
+		lSs.str(string());
+		lSs << "Checking node at location (" << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << ")";
+		TextLogger::LOG(lSs.str(), LOGGING_DEBUG);
 		// Each node can move to 4 different positions (L/R U/D)
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -90,12 +100,14 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 
 		_currentNode = _searchStack.front();
 
+		TextLogger::LOG("Finding next node to search...", LOGGING_DEBUG);
 		// Iterate through all the searchable nodes
 		for (size_t i = 1; i < _searchStack.size(); i++)
 		{
 			// Is the node closer to the goal than we are?
 			if (_currentNode->GetDistance_Remaining(lEnd) + _currentNode->GetDistance_Travelled() >= _searchStack[i]->GetDistance_Remaining(lEnd) + _searchStack[i]->GetDistance_Travelled())
 			{
+				TextLogger::LOG("Finding ideal node to search from", LOGGING_DEBUG);
 				_currentNode = _searchStack[i];
 			}
 		}
@@ -104,11 +116,9 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 		_searchStack.erase(remove(_searchStack.begin(), _searchStack.end(), _currentNode), _searchStack.end());
 	}
 
-	cout << "Path found!" << endl;
+	TextLogger::LOG("Path found!", LOGGING_DEBUG);
 
 	GetPath();
-
-	cout << "Path added" << endl;
 
 	timer->EndTimer();
 

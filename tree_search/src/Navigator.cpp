@@ -3,6 +3,7 @@
 
 #include "../include/Navigator.h"
 #include "../include/MapParser.h"
+#include "../include/TextLogger.h"
 
 using namespace std;
 
@@ -22,9 +23,8 @@ Navigator::Navigator(int width, int height)
 /// </summary>
 Navigator::~Navigator()
 {
-	cout << "Deleting navigator." << endl;
+	TextLogger::LOG("Deleting navigator", LOGGING_DEBUG);
 	delete _map;
-	cout << "Navigator deleted." << endl;
 }
 
 /// <summary>
@@ -42,17 +42,22 @@ Grid2D* Navigator::GetMap()
 /// <param name="searchModule">Search algorithm module to use when navigating map</param>
 void Navigator::Navigate(TreeSearch* searchModule)
 {
+	// We will store our path in this vector
 	vector<SearchNode*> path;
-	cout << "Solving now" << endl;
+	TextLogger::LOG("Solving path...", LOGGING_DEBUG);
+	// Solve the maze using the given search module
 	path = searchModule->Solve(_map);
 
-	cout << "solved path!" << endl;
-	cout << "Path length is: " << path.size() << "." << endl;
+	TextLogger::LOG("Path solved with length " + path.size(), LOGGING_DEFAULT);
 
+	TextLogger::LOG("Updating map...", LOGGING_DEBUG);
+	// Update map to reflect new positions (searched, not searched, path)
 	searchModule->UpdateMap(_map);
 
+	// Print out the solved map
 	_map->PrintMap();
 
+	TextLogger::LOG("Deleting nodes", LOGGING_DEBUG);
 	searchModule->DeleteSearchedNodes();
 	searchModule->DeleteSearchStack();
 }

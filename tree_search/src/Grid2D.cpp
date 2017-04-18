@@ -1,12 +1,16 @@
 #include "../include/Grid2D.h"
+#include "../include/TextLogger.h"
 
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
 Grid2D::Grid2D(int width, int height)
 {
+	stringstream lSs;
+
 	_width = width;
 	_height = height;
 
@@ -22,6 +26,9 @@ Grid2D::Grid2D(int width, int height)
 		for (int j = 0; j < width; j++)
 		{
 			//Set map space to empty
+			lSs.str(string());
+			lSs << "Clearing map space at (" << j << "," << i << ")";
+			TextLogger::LOG(lSs.str(), LOGGING_DEBUG);
 			_map[i][j] = CLEAR;
 		}
 	}

@@ -82,18 +82,24 @@ int main(int argc, char* argv[])
 			GreedyBestFirstSearch* lGBFS = new GreedyBestFirstSearch();
 			lNavigator->Navigate(lGBFS);
 		}
+		else if (strcmp(argv[2], "NONE") == 0)
+		{
+			TextLogger::LOG("Printing map, no search algorithm used.", LOGGING_DEFAULT);
+			lNavigator->GetMap()->PrintMap();
+		}
 		else
 		{
-			TextLogger::LOG("Invalid navigation mode provided.", LOGGING_DEFAULT);
+			TextLogger::LOG("Invalid navigation mode provided.", LOGGING_FATAL);
+
+			return 2;
 		}
 
 	}
 	catch (exception& e)
 	{
-		lSs.clear();
+		lSs.str(string());
 		lSs << "Exception occurred: " << e.what();
 		TextLogger::LOG(lSs.str(), LOGGING_FATAL);
-		cout << "An exception occurred: " << e.what() << endl;
 
 		return 2;
 	}
@@ -122,7 +128,7 @@ int main(int argc, char* argv[])
 	lFileName += argv[2];
 	lFileName += ".bmp";
 
-	lSs.clear();
+	lSs.str(string());
 	lSs << "Writing image to " << lFileName;
 	TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
 	ImageWriter::WriteImage(lFileName, lNavigator->GetMap()->GetGrid(), lColours, lNavigator->GetMap()->GridSize().x, lNavigator->GetMap()->GridSize().y, IMAGESIZEPERNODE);
