@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 {
 	int lCount = -1;
 	int lDraw = 1;
+	bool lLoggingChecked = false;
 	stringstream lSs;
 	// Initialize logging system
 	if (argc >= 4)
@@ -29,6 +30,7 @@ int main(int argc, char* argv[])
 			if (strcmp((argv[i]), "--l") == 0)
 			{
 				TextLogger::OpenLog(stoi(argv[i + 1]));
+				lLoggingChecked = true;
 			}
 			if (strcmp((argv[i]), "--c") == 0)
 			{
@@ -36,7 +38,7 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
-	else
+	if(!lLoggingChecked)
 	{
 		TextLogger::OpenLog(LOGGING_DEFAULT);
 	}
@@ -75,25 +77,31 @@ int main(int argc, char* argv[])
 			// Searching using A* algorithm
 			TextLogger::LOG("Solving using A* algorithm", LOGGING_DEFAULT);
 			AStarSearch* lAS = new AStarSearch();
-			int lMin, lMax, lAvg = 0;
+			int lMin = 0, lMax = 0, lAvg = 0;
 
 			for (int i = 0; i < lCount; i++)
 			{
 				Navigator* lNavigatorToUse = nullptr;
 				lNavigator->Clone(&lNavigatorToUse);
 				TreeSearch* lSearchModule = nullptr;
+				AStarSearch* lASTemp = new AStarSearch();
 
-				lNavigatorToUse->Navigate(lAS);
-				if (lAS->TimeTaken() < lMin)
+				lNavigatorToUse->Navigate(lASTemp);
+				if (lAS->TimeTaken() < lMin || i == 0)
 				{
-					lMin = lAS->TimeTaken();
+					lMin = lASTemp->TimeTaken();
 				}
+				cout << "Compare " << lAS->TimeTaken() << " and " << lMax << endl;
 				if (lAS->TimeTaken() > lMax)
 				{
-					lMax = lAS->TimeTaken();
+					cout << "update lmax " << endl;
+					lMax = lASTemp->TimeTaken();
 				}
 
-				lAvg = (lAvg*(i + 1) + lAS->TimeTaken()) / i;
+				delete lNavigatorToUse;
+				delete lASTemp;
+
+				//lAvg = ((lAvg*(i + 1) + lAS->TimeTaken()) / (i+1));
 			}
 			lSs.str(string());
 			lSs << "Min time: " << lMin << ", Max time: " << lMax << ", Avg time: " << lAvg;

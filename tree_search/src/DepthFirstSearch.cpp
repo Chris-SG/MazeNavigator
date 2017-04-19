@@ -103,9 +103,6 @@ std::vector<SearchNode*> DepthFirstSearch::Solve(Grid2D* map)
 	// The start node will return nullptr as the previous node, so we can
 	// use this to check if we are back at the start
 	GetPath();
-	cout << "a" << endl;
-
-	cout << "Path added" << endl;
 
 	timer->EndTimer();
 

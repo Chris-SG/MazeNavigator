@@ -53,7 +53,6 @@ void Navigator::Navigate(TreeSearch* searchModule)
 	TextLogger::LOG("Solving path...", LOGGING_DEBUG);
 	// Solve the maze using the given search module
 	path = searchModule->Solve(_map);
-
 	TextLogger::LOG("Path solved with length " + path.size(), LOGGING_DEFAULT);
 
 	TextLogger::LOG("Updating map...", LOGGING_DEBUG);
@@ -65,7 +64,9 @@ void Navigator::Navigate(TreeSearch* searchModule)
 
 	TextLogger::LOG("Deleting nodes", LOGGING_DEBUG);
 	searchModule->DeleteSearchedNodes();
+	cout << "a" << endl;
 	searchModule->DeleteSearchStack();
+	cout << "One done" << endl;
 }
 
 

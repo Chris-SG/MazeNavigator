@@ -48,7 +48,7 @@ void TreeSearch::GetDirectionOrder(Point2D end)
 
 void TreeSearch::DeleteSearchedNodes()
 {
-	for (size_t i = _searchedNodes.size()-1; i >= 0; --i)
+	for (int i = _searchedNodes.size()-1; i >= 0; --i)
 	{
 		delete _searchedNodes.at(i);
 	}
@@ -56,7 +56,7 @@ void TreeSearch::DeleteSearchedNodes()
 
 void TreeSearch::DeleteSearchStack()
 {
-	for (size_t i = _searchStack.size()-1; i >= 0; --i)
+	for (int i = _searchStack.size()-1; i >= 0; --i)
 	{
 		delete _searchStack.at(i);
 	}
@@ -143,5 +143,5 @@ void TreeSearch::GetPath()
 
 int TreeSearch::TimeTaken()
 {
-	return _timeTaken;
+	return static_cast<int>(_timeTaken);
 }
