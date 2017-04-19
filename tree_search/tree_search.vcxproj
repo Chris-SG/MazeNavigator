@@ -175,6 +175,7 @@
     <ClInclude Include="include\Node.h" />
     <ClInclude Include="include\TextLogger.h" />
     <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\TreeSearchExceptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

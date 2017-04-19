@@ -1,4 +1,5 @@
 #pragma once
+#include <exception>
 
 /// <summary>
 /// Point2D will be a frequently used struct to represent a single location on the map

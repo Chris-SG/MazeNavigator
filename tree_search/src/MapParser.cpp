@@ -5,8 +5,11 @@
 #include "../include/MapParser.h"
 #include "../include/Timer.h"
 #include "../include/TextLogger.h"
+#include "../include/TreeSearchExceptions.h"
 
 using namespace std;
+
+
 
 /// <summary>
 /// Constructor for the MapParser
@@ -15,6 +18,10 @@ using namespace std;
 MapParser::MapParser(string filename)
 {
 	_file = new fstream(filename, fstream::in); //Open file
+	if (!_file->good())
+	{
+		throw invalidfile;
+	}
 }
 
 /// <summary>

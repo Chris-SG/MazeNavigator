@@ -95,5 +95,8 @@
     <ClInclude Include="include\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\TreeSearchExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
