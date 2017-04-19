@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../include/Timer.h"
 #include "../include/TextLogger.h"
+#include <sstream>
 using namespace std;
 
 /// <summary>
@@ -23,21 +24,29 @@ GreedyBestFirstSearch::~GreedyBestFirstSearch()
 /// <param name="map">The map that we wish to solve</param>
 std::vector<SearchNode*> GreedyBestFirstSearch::Solve(Grid2D* map)
 {
+	stringstream lSs;
+	TextLogger::LOG("Beginning solve using Greedy Best First Search algorithm", LOGGING_DEFAULT);
 	ChronoTimer* timer = new ChronoTimer();
 	timer->StartTimer();
 
+	TextLogger::LOG("Detecting map start", LOGGING_DEBUG);
 	_currentNode = map->GetStart(); //Get the start point of the map
 	SearchNode* lToPush = nullptr; //We don't yet have a node to push
 
 	// While directions aren't needed for GBFS, we still need 4 directions when discovering nodes
+	TextLogger::LOG("Detecting movement order", LOGGING_DEBUG);
 	GetDirectionOrder(map->GetEnd()->GetPos());
+
+	TextLogger::LOG("Detecting map end", LOGGING_DEBUG);
 	Point2D lEnd = map->GetEnd()->GetPos();
 
 	// Keep trying until we find the end
 	/* consider adding a check so we can't get stuck (will probably crash) */
 	while (!(_currentNode->IsEqual(*map->GetEnd())))
 	{
-		cout << "At node position: " << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << endl;
+		lSs.str(string());
+		lSs << "Checking node at location (" << _currentNode->GetPos().x << "," << _currentNode->GetPos().y << ")";
+		TextLogger::LOG(lSs.str(), LOGGING_DEBUG);
 		// Each node can move to 4 different positions (L/R U/D)
 		for (int i = 0; i < 4; i++)
 		{
@@ -91,6 +100,7 @@ std::vector<SearchNode*> GreedyBestFirstSearch::Solve(Grid2D* map)
 		_currentNode = _searchStack.front();
 
 		// Iterate through all the searchable nodes
+		TextLogger::LOG("Finding next node to search...", LOGGING_DEBUG);
 		for (size_t i = 1; i < _searchStack.size(); i++)
 		{
 			// Is the node closer to the goal than we are?
@@ -103,6 +113,8 @@ std::vector<SearchNode*> GreedyBestFirstSearch::Solve(Grid2D* map)
 		// We can remove our next node from the stack
 		_searchStack.erase(remove(_searchStack.begin(), _searchStack.end(), _currentNode), _searchStack.end());
 	}
+
+	TextLogger::LOG("Path found!", LOGGING_DEBUG);
 
 	GetPath();
 

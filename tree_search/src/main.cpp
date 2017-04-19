@@ -14,14 +14,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	int lTiming = -1;
+	int lCount = -1;
 	int lDraw = 1;
 	stringstream lSs;
 	// Initialize logging system
-	// Consider moving to parameters (eg. --l F)
 	if (argc >= 4)
 	{
-		for (int i = 3; i < argc; i++)
+		for (int i = 3; i < argc-1; i++)
 		{
 			if (strcmp((argv[i]), "--d") == 0)
 			{
@@ -31,9 +30,9 @@ int main(int argc, char* argv[])
 			{
 				TextLogger::OpenLog(stoi(argv[i + 1]));
 			}
-			if (strcmp((argv[i]), "--t") == 0)
+			if (strcmp((argv[i]), "--c") == 0)
 			{
-				lTiming = stoi(argv[i + 1]);
+				lCount = stoi(argv[i + 1]);
 			}
 		}
 	}
@@ -62,6 +61,7 @@ int main(int argc, char* argv[])
 	// Exception handling
 	try
 	{
+		int lMin, lMax, lAvg;
 		// Read provided map file
 		TextLogger::LOG("Opening map from file.", LOGGING_DEFAULT);
 		MapParser lMap(argv[1]);
@@ -75,6 +75,30 @@ int main(int argc, char* argv[])
 			// Searching using A* algorithm
 			TextLogger::LOG("Solving using A* algorithm", LOGGING_DEFAULT);
 			AStarSearch* lAS = new AStarSearch();
+			int lMin, lMax, lAvg = 0;
+
+			for (int i = 0; i < lCount; i++)
+			{
+				Navigator* lNavigatorToUse = nullptr;
+				lNavigator->Clone(&lNavigatorToUse);
+				TreeSearch* lSearchModule = nullptr;
+
+				lNavigatorToUse->Navigate(lAS);
+				if (lAS->TimeTaken() < lMin)
+				{
+					lMin = lAS->TimeTaken();
+				}
+				if (lAS->TimeTaken() > lMax)
+				{
+					lMax = lAS->TimeTaken();
+				}
+
+				lAvg = (lAvg*(i + 1) + lAS->TimeTaken()) / i;
+			}
+			lSs.str(string());
+			lSs << "Min time: " << lMin << ", Max time: " << lMax << ", Avg time: " << lAvg;
+			TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
+
 			lNavigator->Navigate(lAS);
 		}
 		else if (strcmp(argv[2], "DFS") == 0)

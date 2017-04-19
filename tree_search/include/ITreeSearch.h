@@ -23,6 +23,7 @@ public:
 	void DeleteSearchStack();
 
 	void UpdateMap(Grid2D* map);
+	int TimeTaken();
 protected:	
 	std::vector<SearchNode*> _searchedNodes; //The nodes that have been searched, to avoid loops
 	std::vector<SearchNode*> _searchStack; //The nodes that are still yet to be searched

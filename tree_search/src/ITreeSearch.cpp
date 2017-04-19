@@ -48,7 +48,7 @@ void TreeSearch::GetDirectionOrder(Point2D end)
 
 void TreeSearch::DeleteSearchedNodes()
 {
-	for (int i = _searchedNodes.size()-1; i >= 0; --i)
+	for (size_t i = _searchedNodes.size()-1; i >= 0; --i)
 	{
 		delete _searchedNodes.at(i);
 	}
@@ -56,7 +56,7 @@ void TreeSearch::DeleteSearchedNodes()
 
 void TreeSearch::DeleteSearchStack()
 {
-	for (int i = _searchStack.size()-1; i >= 0; --i)
+	for (size_t i = _searchStack.size()-1; i >= 0; --i)
 	{
 		delete _searchStack.at(i);
 	}
@@ -139,4 +139,9 @@ void TreeSearch::GetPath()
 		_path.push_back(_currentNode); // add the node to our correct path
 		_currentNode = _currentNode->GetPrevious(); // get the previous node in the path
 	}
+}
+
+int TreeSearch::TimeTaken()
+{
+	return _timeTaken;
 }
