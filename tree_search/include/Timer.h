@@ -20,4 +20,5 @@ public:
 	void EndTimer();
 
 	std::string PrintTime_ms();
+	time_t GetTime_ms();
 };

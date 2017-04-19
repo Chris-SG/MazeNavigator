@@ -7,6 +7,12 @@
 
 using namespace std;
 
+
+Navigator::Navigator(Grid2D* newGrid)
+{
+	newGrid->Clone(&_map);
+}
+
 /// <summary>
 /// Constructor for a new Navigator
 /// </summary>
@@ -60,4 +66,10 @@ void Navigator::Navigate(TreeSearch* searchModule)
 	TextLogger::LOG("Deleting nodes", LOGGING_DEBUG);
 	searchModule->DeleteSearchedNodes();
 	searchModule->DeleteSearchStack();
+}
+
+
+void Navigator::Clone(Navigator** newNavigator)
+{
+	*newNavigator = new Navigator(_map);
 }

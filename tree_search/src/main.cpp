@@ -14,12 +14,28 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+	int lTiming = -1;
+	int lDraw = 1;
 	stringstream lSs;
 	// Initialize logging system
 	// Consider moving to parameters (eg. --l F)
 	if (argc >= 4)
 	{
-		TextLogger::OpenLog(stoi(argv[3]));
+		for (int i = 3; i < argc; i++)
+		{
+			if (strcmp((argv[i]), "--d") == 0)
+			{
+				lDraw = stoi(argv[i + 1]);
+			}
+			if (strcmp((argv[i]), "--l") == 0)
+			{
+				TextLogger::OpenLog(stoi(argv[i + 1]));
+			}
+			if (strcmp((argv[i]), "--t") == 0)
+			{
+				lTiming = stoi(argv[i + 1]);
+			}
+		}
 	}
 	else
 	{
@@ -36,7 +52,7 @@ int main(int argc, char* argv[])
 	else if (argc < 3)
 	{
 		TextLogger::LOG("No search method provided.", LOGGING_DEFAULT);
-		cout << "Options are: AS, BFS, DFS, GBFS" << endl;
+		cout << "Options are: AS, BFS, DFS, GBFS, ALL" << endl;
 		return 2;
 	}
 
@@ -87,6 +103,44 @@ int main(int argc, char* argv[])
 			TextLogger::LOG("Printing map, no search algorithm used.", LOGGING_DEFAULT);
 			lNavigator->GetMap()->PrintMap();
 		}
+		else if (strcmp(argv[2], "ALL") == 0)
+		{
+
+			TextLogger::LOG("Solving using all algorithms.", LOGGING_DEFAULT);
+			for (int i = 0; i < 4; i++)
+			{
+				Navigator* lNavigatorToUse = nullptr;
+				lNavigator->Clone(&lNavigatorToUse);
+				TreeSearch* lSearchModule = nullptr;
+
+				if (i == 0)
+				{
+
+					TextLogger::LOG("Solving with A*.", LOGGING_DEBUG);
+					lSearchModule = new AStarSearch();
+				}
+				else if (i == 1)
+				{
+					TextLogger::LOG("Solving with DFS.", LOGGING_DEBUG);
+					lSearchModule = new DepthFirstSearch();
+				}
+				else if (i == 2)
+				{
+					TextLogger::LOG("Solving with BFS.", LOGGING_DEBUG);
+					lSearchModule = new BreadthFirstSearch();
+				}
+				else if (i == 3)
+				{
+					TextLogger::LOG("Solving with GBFS.", LOGGING_DEBUG);
+					lSearchModule = new GreedyBestFirstSearch();
+				}
+
+				lNavigatorToUse->Navigate(lSearchModule);
+
+				delete lSearchModule;
+				delete lNavigatorToUse;
+			}
+		}
 		else
 		{
 			TextLogger::LOG("Invalid navigation mode provided.", LOGGING_FATAL);
@@ -104,34 +158,37 @@ int main(int argc, char* argv[])
 		return 2;
 	}
 
-	vector<colour>* lColours = new vector<colour>();
-	colour lColour;
+	if (lDraw)
+	{
+		vector<colour>* lColours = new vector<colour>();
+		colour lColour;
 
-	TextLogger::LOG("Adding colours to vector.", LOGGING_DEBUG);
-	lColour = { 255, 255, 255 }; // empty space colour
-	lColours->push_back(lColour);
-	lColour = { 0, 0, 0 }; // blocked colour
-	lColours->push_back(lColour);
-	lColour = { 0, 255, 0 }; // start position colour
-	lColours->push_back(lColour);
-	lColour = { 255, 0, 0 }; // end colour
-	lColours->push_back(lColour);
-	lColour = { 255, 255, 0 }; // path colour
-	lColours->push_back(lColour);
-	lColour = { 0, 255, 255 }; // searched nodes colour
-	lColours->push_back(lColour);
-	lColour = { 255, 0, 255 }; // unsearched nodes colour
-	lColours->push_back(lColour);
+		TextLogger::LOG("Adding colours to vector.", LOGGING_DEBUG);
+		lColour = { 255, 255, 255 }; // empty space colour
+		lColours->push_back(lColour);
+		lColour = { 0, 0, 0 }; // blocked colour
+		lColours->push_back(lColour);
+		lColour = { 0, 255, 0 }; // start position colour
+		lColours->push_back(lColour);
+		lColour = { 255, 0, 0 }; // end colour
+		lColours->push_back(lColour);
+		lColour = { 255, 255, 0 }; // path colour
+		lColours->push_back(lColour);
+		lColour = { 0, 255, 255 }; // searched nodes colour
+		lColours->push_back(lColour);
+		lColour = { 255, 0, 255 }; // unsearched nodes colour
+		lColours->push_back(lColour);
 
-	string lFileName = argv[1];
-	lFileName += "_";
-	lFileName += argv[2];
-	lFileName += ".bmp";
+		string lFileName = argv[1];
+		lFileName += "_";
+		lFileName += argv[2];
+		lFileName += ".bmp";
 
-	lSs.str(string());
-	lSs << "Writing image to " << lFileName;
-	TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
-	ImageWriter::WriteImage(lFileName, lNavigator->GetMap()->GetGrid(), lColours, lNavigator->GetMap()->GridSize().x, lNavigator->GetMap()->GridSize().y, IMAGESIZEPERNODE);
+		lSs.str(string());
+		lSs << "Writing image to " << lFileName;
+		TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
+		ImageWriter::WriteImage(lFileName, lNavigator->GetMap()->GetGrid(), lColours, lNavigator->GetMap()->GridSize().x, lNavigator->GetMap()->GridSize().y, IMAGESIZEPERNODE);
+	}
 
 
 	delete lNavigator;

@@ -31,6 +31,7 @@ public:
 	void AddEnd(int x, int y);
 	int AtPos(Point2D loc);
 	void SetPosition(Point2D loc, int type);
+	void SetPosition(int x, int y, int type);
 
 	Point2D GridSize();
 
@@ -40,4 +41,6 @@ public:
 
 	SearchNode* GetStart();
 	SearchNode* GetEnd();
+
+	void Clone(Grid2D** newMap);
 };

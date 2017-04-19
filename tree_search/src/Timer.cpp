@@ -24,3 +24,8 @@ std::string ChronoTimer::PrintTime_ms()
 {
 	return (std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(_endTime - _startTime).count()) + "ms");
 }
+
+time_t ChronoTimer::GetTime_ms()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(_endTime - _startTime).count();
+}

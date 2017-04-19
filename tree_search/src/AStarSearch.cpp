@@ -123,6 +123,7 @@ std::vector<SearchNode*> AStarSearch::Solve(Grid2D* map)
 	timer->EndTimer();
 
 	TextLogger::LOG("Path found in " + timer->PrintTime_ms(), LOGGING_DEFAULT);
+	_timeTaken = timer->GetTime_ms();
 
 	// Return our successful path
 	return _path;

@@ -30,6 +30,7 @@ protected:
 	SearchNode* _currentNode; //Current node the search is located at
 
 	int _directionOrder[4]; //Used to store the order in which a search is made (for DFS/BFS)
+	time_t _timeTaken;
 
 	bool AtEnd(SearchNode* endNode) { return _currentNode == endNode; }
 	void GetDirectionOrder(Point2D end);

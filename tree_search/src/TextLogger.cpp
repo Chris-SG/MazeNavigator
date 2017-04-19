@@ -23,6 +23,7 @@ namespace TextLogger
 
 	void OpenLog(int logLevel, string logName)
 	{
+		gLoggingLevel = logLevel;
 		if (logLevel != LOGGING_OFF)
 		{
 			if (logName == "none")
@@ -35,7 +36,6 @@ namespace TextLogger
 				lSs << put_time(&lTimeInfo, "%Y-%m-%d %H-%M-%S.log");
 				logName = lSs.str();
 			}
-			gLoggingLevel = logLevel;
 			gLogFile.open(logName, fstream::out);
 
 			switch (logLevel)

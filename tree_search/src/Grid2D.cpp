@@ -215,3 +215,30 @@ void Grid2D::SetPosition(Point2D pos, int type)
 
 	_map[pos.y][pos.x] = type;
 }
+
+void Grid2D::SetPosition(int x, int y, int type)
+{
+	if (0 > x || _width <= x || 0 > y || _height <= y)
+	{
+		return;
+	}
+
+	_map[y][x] = type;
+}
+
+
+void Grid2D::Clone(Grid2D** newMap)
+{
+	*newMap = new Grid2D(_width, _height);
+
+	(*newMap)->AddStart(_startNode->GetPos().x, _startNode->GetPos().y);
+	(*newMap)->AddEnd(_endNode->GetPos().x, _endNode->GetPos().y);
+
+	for (int i = 0; i < _height; i++)
+	{
+		for (int j = 0; j < _width; j++)
+		{
+			(*newMap)->SetPosition(j, i, _map[i][j]);
+		}
+	}
+}

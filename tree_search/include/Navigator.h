@@ -18,10 +18,12 @@ private:
 	Grid2D* _map; //The map we are searching through
 
 public:
+	Navigator(Grid2D* newGrid);
 	Navigator(int width, int height);
 	~Navigator();
 
 	Grid2D* GetMap();
 
 	void Navigate(TreeSearch* searchModule);
+	void Clone(Navigator** newNavigator);
 };
