@@ -1,12 +1,17 @@
-#include "../include/Grid2D.h"
-#include "../include/TextLogger.h"
-
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 
+#include "../include/Grid2D.h"
+#include "../include/TextLogger.h"
+
 using namespace std;
 
+/// <summary>
+/// Constructor for grid using a given width and height
+/// </summary>
+/// <param name="width">Width of the grid</param>
+/// <param name="height">Height of the grid</param>
 Grid2D::Grid2D(int width, int height)
 {
 	stringstream lSs;
@@ -34,14 +39,19 @@ Grid2D::Grid2D(int width, int height)
 	}
 }
 
+/// <summary>
+/// Destructor for grid
+/// </summary>
 Grid2D::~Grid2D()
 {
-	cout << "Deleting grid." << endl;
+	TextLogger::LOG("Deleting grid", LOGGING_DEBUG);
+	// We start by deleting the start and end node objects
 	delete _startNode;
 	delete _endNode;
 
-	cout << "Grid nodes deleted." << endl;
+	TextLogger::LOG("Grid nodes deleted", LOGGING_DEBUG);
 
+	// Delete all chars from the map to prevent a memory leak
 	for (int i = 0; i < _height; i++)
 	{
 		delete[] _map[i];
@@ -49,7 +59,7 @@ Grid2D::~Grid2D()
 
 	delete[] _map;
 
-	cout << "Grid deleted." << endl;
+	TextLogger::LOG("Grid Deleted", LOGGING_DEBUG);
 }
 
 /// <summary>
@@ -93,11 +103,17 @@ void Grid2D::AddStart(int x, int y)
 	_map[y][x] = POSITION;
 }
 
+/// <summary>
+/// Returns an entire grid
+/// </summary>
 char** Grid2D::GetGrid()
 {
 	return _map;
 }
 
+/// <summary>
+/// Returns the size of the grid
+/// </summary>
 Point2D Grid2D::GridSize()
 {
 	Point2D ret;
@@ -121,8 +137,13 @@ void Grid2D::AddEnd(int x, int y)
 	_map[y][x] = END;
 }
 
+/// <summary>
+/// Check the state of a given grid location
+/// </summary>
+/// <param name="pos">The 2d position on the map</param>
 int Grid2D::AtPos(Point2D pos)
 {
+	// Ensure we are not out of range
 	if (0 > pos.x || _width <= pos.x || 0 > pos.y || _height <= pos.y)
 	{
 		return BLOCKED;
@@ -130,84 +151,108 @@ int Grid2D::AtPos(Point2D pos)
 	return _map[pos.y][pos.x];
 }
 
+/// <summary>
+/// Print a text-representation of the grid
+/// </summary>
 void Grid2D::PrintMap()
 {
+	stringstream lSs;
+	
+	// Create a border
 	for (int i = _width+2; i > 0; i--)
 	{
-		cout << "-";
+		lSs << "-";
 	}
-	cout << endl;
+	TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
 
 	for (int i = 0; i < _height; i++)
 	{
-		cout << "|";
+		lSs.str(string());
+		// More borders
+		lSs << "|";
+
+		// Text representation of each different position state
 		for (int j = 0; j < _width; j++)
 		{
 			switch (_map[i][j])
 			{
 				case BLOCKED:
 				{
-					cout << "X";
+					lSs << "X";
 					break;
 				}
 				case CLEAR:
 				{
-					cout << ".";
+					lSs << ".";
 					break;
 				}
 				case POSITION:
 				{
-					cout << "O";
+					lSs << "O";
 					break;
 				}
 				case END:
 				{
-					cout << "*";
+					lSs << "*";
 					break;
 				}
 				case PATH:
 				{
-					cout << "p";
+					lSs << "p";
 					break;
 				}
 				case SEARCHED:
 				{
-					cout << "s";
+					lSs << "s";
 					break;
 				}
 				case QUEUED:
 				{
-					cout << "q";
+					lSs << "q";
 					break;
 				}
 			}
 		}
-		cout << "|";
 
-		cout << endl;
+		// Right side border
+		lSs << "|";
+
+		TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
 	}
+	lSs.str(string());
 
+	// Borders
 	for (int i = _width + 2; i > 0; i--)
 	{
-		cout << "-";
+		lSs << "-";
 	}
-	cout << endl;
+	TextLogger::LOG(lSs.str() , LOGGING_DEFAULT);
 }
 
-
-
+/// <summary>
+/// Get the start node of the map
+/// </summary>
 SearchNode* Grid2D::GetStart()
 {
 	return _startNode;
 }
 
+/// <summary>
+/// Get the end node of the map
+/// </summary>
 SearchNode* Grid2D::GetEnd()
 {
 	return _endNode;
 }
 
+/// <summary>
+/// Set a given map position to a specific state using Point2D
+/// </summary>
+/// <param name="pos">Position to change state</param>
+/// <param name="type">State to change position to</param>
 void Grid2D::SetPosition(Point2D pos, int type)
 {
+	// Avoiding out-of-range
 	if (0 > pos.x || _width <= pos.x || 0 > pos.y || _height <= pos.y)
 	{
 		return;
@@ -216,6 +261,12 @@ void Grid2D::SetPosition(Point2D pos, int type)
 	_map[pos.y][pos.x] = type;
 }
 
+/// <summary>
+/// Set a given map position to a specific state using integer values
+/// </summary>
+/// <param name="x">X Position to change state</param>
+/// <param name="y">Y Position to change state</param>
+/// <param name="type">State to change position to</param>
 void Grid2D::SetPosition(int x, int y, int type)
 {
 	if (0 > x || _width <= x || 0 > y || _height <= y)
@@ -226,14 +277,20 @@ void Grid2D::SetPosition(int x, int y, int type)
 	_map[y][x] = type;
 }
 
-
+/// <summary>
+/// Clone this grid to another grid object, as a grid is single use
+/// </summary>
+/// <param name="newMap">Location to clone map to</param>
 void Grid2D::Clone(Grid2D** newMap)
 {
+	// We need to initialize the map
 	*newMap = new Grid2D(_width, _height);
 
+	// Add start and end using the nodes from this map
 	(*newMap)->AddStart(_startNode->GetPos().x, _startNode->GetPos().y);
 	(*newMap)->AddEnd(_endNode->GetPos().x, _endNode->GetPos().y);
 
+	// Copy all square states
 	for (int i = 0; i < _height; i++)
 	{
 		for (int j = 0; j < _width; j++)

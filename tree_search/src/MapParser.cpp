@@ -1,9 +1,10 @@
-#include "../include/MapParser.h"
-#include "../include/Timer.h"
-#include "../include/TextLogger.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
+
+#include "../include/MapParser.h"
+#include "../include/Timer.h"
+#include "../include/TextLogger.h"
 
 using namespace std;
 
@@ -14,8 +15,6 @@ using namespace std;
 MapParser::MapParser(string filename)
 {
 	_file = new fstream(filename, fstream::in); //Open file
-
-	// consider adding checks
 }
 
 /// <summary>

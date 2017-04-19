@@ -1,8 +1,9 @@
+#include <sstream>
+
 #include "../include/BreadthFirstSearch.h"
-#include <iostream>
 #include "../include/Timer.h"
 #include "../include/TextLogger.h"
-#include <sstream>
+
 using namespace std;
 
 /// <summary>
@@ -87,7 +88,6 @@ std::vector<SearchNode*> BreadthFirstSearch::Solve(Grid2D* map)
 				if (!lVisited)
 				{
 					// Add it to our list of must-visit nodes
-					cout << "Add node to stack!" << endl;
 					_searchStack.push_back(lToPush);
 				}
 			}

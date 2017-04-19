@@ -61,15 +61,15 @@ void Navigator::Navigate(TreeSearch* searchModule)
 
 	// Print out the solved map
 	_map->PrintMap();
-
 	TextLogger::LOG("Deleting nodes", LOGGING_DEBUG);
 	searchModule->DeleteSearchedNodes();
-	cout << "a" << endl;
 	searchModule->DeleteSearchStack();
-	cout << "One done" << endl;
 }
 
-
+/// <summary>
+/// Clone our navigator
+/// </summary>
+/// <param name="newNavigator">Navigator pointer to place the new navigator</param>
 void Navigator::Clone(Navigator** newNavigator)
 {
 	*newNavigator = new Navigator(_map);

@@ -1,9 +1,9 @@
 #include <sstream>
 
 #include "../include/AStarSearch.h"
-#include <iostream>
 #include "../include/Timer.h"
 #include "../include/TextLogger.h"
+
 using namespace std;
 
 /// <summary>

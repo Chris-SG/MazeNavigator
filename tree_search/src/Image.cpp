@@ -1,10 +1,11 @@
+#include <fstream>
+#include <sstream>
+
+#include <math.h>
+
 #include "../include/Image.h"
 #include "../include/Timer.h"
-
-#include <fstream>
-
-#include <iostream>
-#include <math.h>
+#include "../include/TextLogger.h"
 
 using namespace std;
 
@@ -14,11 +15,16 @@ using namespace std;
 /// </summary>
 /// <param name="filename">File to write</param>
 /// <param name="map">A 2d map grid</param>
+/// <param name="colours">A list of colours for each grid state</param>
+/// <param name="x">Width of provided grid</param>
+/// <param name="y">Height of provided grid</param>
+/// <param name="pxsize">Size of each grid pixel</param>
 void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* colours, int x, int y, int pxsize)
 {
 	ChronoTimer* timer = new ChronoTimer();
 	timer->StartTimer();
 
+	// File must be opened as a binary type
 	fstream* lFile = new fstream(fileName, fstream::out, fstream::binary);
 
 	char lPadding = ((x * 3 * pxsize) % 4);
@@ -86,7 +92,8 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 
 	unsigned char lToWrite[3] = { 0,0,0 };
 	char lZero = 0;
-	// Change this to using a colour list passed to the function, allows use in more than just this program :)
+
+	// y position is done in reverse, thanks bmp
 	for (int i = y-1; i >= 0; i--)
 	{
 		for (int i2 = 0; i2 < pxsize; i2++)
@@ -101,15 +108,18 @@ void ImageWriter::WriteImage(std::string fileName, char** map, vector<colour>* c
 				for (int k = 0; k < pxsize; k++) lFile->write(reinterpret_cast<char*>(&lToWrite), sizeof(lToWrite));
 			}
 
+			// Each column must be padded to be divisible by 4 bytes
 			for (int j = 0; j < lPadding; j++) lFile->write(&lZero, sizeof(char));
 		}
 	}
 
-	cout << "Wrote colours" << endl;
+	TextLogger::LOG("Wrote colours to file", LOGGING_DEBUG);
 
 	lFile->close();
 
 	timer->EndTimer();
-	cout << "Image generated in " << timer->PrintTime_ms() << "." << endl;
+	stringstream lSs;
+	lSs << "Image generated in " << timer->PrintTime_ms();
+	TextLogger::LOG(lSs.str(), LOGGING_DEFAULT);
 	delete timer;
 }

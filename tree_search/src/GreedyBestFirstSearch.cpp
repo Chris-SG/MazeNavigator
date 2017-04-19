@@ -1,8 +1,9 @@
+#include <sstream>
+
 #include "../include/GreedyBestFirstSearch.h"
-#include <iostream>
 #include "../include/Timer.h"
 #include "../include/TextLogger.h"
-#include <sstream>
+
 using namespace std;
 
 /// <summary>
