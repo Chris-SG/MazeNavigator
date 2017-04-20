@@ -53,11 +53,19 @@ void Navigator::Navigate(TreeSearch* searchModule)
 	TextLogger::LOG("Solving path...", LOGGING_DEBUG);
 	// Solve the maze using the given search module
 	path = searchModule->Solve(_map);
-	TextLogger::LOG("Path solved with length " + path.size(), LOGGING_DEFAULT);
 
-	TextLogger::LOG("Updating map...", LOGGING_DEBUG);
-	// Update map to reflect new positions (searched, not searched, path)
-	searchModule->UpdateMap(_map);
+	if (path.size() == 0)
+	{
+		TextLogger::LOG("No solution found.", LOGGING_DEFAULT);
+	}
+	else
+	{
+		TextLogger::LOG("Path solved with length " + path.size(), LOGGING_DEFAULT);
+
+		TextLogger::LOG("Updating map...", LOGGING_DEBUG);
+		// Update map to reflect new positions (searched, not searched, path)
+		searchModule->UpdateMap(_map);
+	}
 
 	// Print out the solved map
 	_map->PrintMap();

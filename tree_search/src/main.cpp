@@ -7,6 +7,7 @@
 #include "../include/BreadthFirstSearch.h"
 #include "../include/DepthFirstSearch.h"
 #include "../include/GreedyBestFirstSearch.h"
+#include "../include/IterativeDeepeningDepthFirstSearch.h"
 
 // Additional includes
 #include "../include/Timer.h"
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
 		cout << "NAVIGATOR HELP" << endl;
 		cout << "LAUNCH FORMAT: tree_search.exe {mapfile} {searchtype} [param arg] ..." << endl;
 		cout << "\tmapfile must use a correct format. Examples can be found in the maps folder." << endl;
-		cout << "\tsearchtype must be a valid search algorithm. Options are: AS, DFS, BFS, GBFS, ALL" << endl;
+		cout << "\tsearchtype must be a valid search algorithm. Options are: AS, DFS, BFS, GBFS, IDS, ALL" << endl;
 		cout << "\tAdditional parameters are optional. The argument for a parameter must follow the parameter, eg: --l 1" << endl;
 		cout << "\tAll params must be prefixed with two dashes (--). List of params as follows:" << endl;
 		cout << "\t--d" << endl;
@@ -87,7 +88,7 @@ int main(int argc, char* argv[])
 	else if (argc < 3)
 	{
 		TextLogger::LOG("No search method provided.", LOGGING_FATAL);
-		TextLogger::LOG("Options are: AS, BFS, DFS, GBFS, ALL", LOGGING_FATAL);
+		TextLogger::LOG("Options are: AS, BFS, DFS, GBFS, IDS, ALL", LOGGING_FATAL);
 		TextLogger::LOG("Please use --help for assistance running this program.", LOGGING_FATAL);
 		return 2;
 	}
@@ -149,6 +150,16 @@ int main(int argc, char* argv[])
 				MultiSearch(lNavigator, lCount, "GBFS");
 
 			lNavigator->Navigate(lGBFS);
+		}
+		else if (strcmp(argv[2], "IDS") == 0)
+		{
+			TextLogger::LOG("Solving using Iterative Deepening Depth First Search algorithm", LOGGING_DEFAULT);
+			IterativeDeepeningDepthFirstSearch* lIDS = new IterativeDeepeningDepthFirstSearch();
+
+			if (lCount > 0)
+				MultiSearch(lNavigator, lCount, "IDS");
+
+			lNavigator->Navigate(lIDS);
 		}
 		else if (strcmp(argv[2], "NONE") == 0)
 		{

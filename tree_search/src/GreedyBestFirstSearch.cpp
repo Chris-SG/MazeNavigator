@@ -97,6 +97,15 @@ std::vector<SearchNode*> GreedyBestFirstSearch::Solve(Grid2D* map)
 		}
 
 		_searchedNodes.push_back(_currentNode); // We can add our current node to the list of nodes we have searched
+		if (_searchStack.size() == 0)
+		{
+			TextLogger::LOG("No path exists for maze!", LOGGING_FATAL);
+			timer->EndTimer();
+
+			TextLogger::LOG("Completed in " + timer->PrintTime_ms(), LOGGING_DEFAULT);
+			_timeTaken = timer->GetTime_ms();
+			return _path;
+		}
 
 		_currentNode = _searchStack.front();
 

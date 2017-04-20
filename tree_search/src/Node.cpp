@@ -9,6 +9,7 @@ SearchNode::SearchNode(Point2D position)
 	_position = position;
 	// As there is no attached node, we set the previous node to nullptr
 	_previousNode = nullptr;
+	_refCount = 0;
 }
 
 /// <summary>
@@ -20,6 +21,8 @@ SearchNode::SearchNode(Point2D position, SearchNode* previous)
 {
 	_position = position;
 	_previousNode = previous;
+	_refCount = 0;
+	previous->Increment();
 }
 
 /// <summary>
@@ -27,7 +30,13 @@ SearchNode::SearchNode(Point2D position, SearchNode* previous)
 /// </summary>
 SearchNode::~SearchNode()
 {
+	if(_previousNode != nullptr)
+		_previousNode->Decrement();
+}
 
+int SearchNode::GetReference_Count()
+{
+	return _refCount;
 }
 
 /// <summary>
@@ -46,6 +55,26 @@ bool SearchNode::operator==(const SearchNode& otherNode)
 bool SearchNode::operator!=(const SearchNode& otherNode)
 {
 	return !(*this == otherNode);
+}
+
+int SearchNode::operator++()
+{
+	return _refCount++;
+}
+
+int SearchNode::operator--()
+{
+	return _refCount--;
+}
+
+int SearchNode::Increment()
+{
+	return _refCount++;
+}
+
+int SearchNode::Decrement()
+{
+	return _refCount--;
 }
 
 /// <summary>

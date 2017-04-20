@@ -45,8 +45,7 @@ Grid2D::Grid2D(int width, int height)
 Grid2D::~Grid2D()
 {
 	TextLogger::LOG("Deleting grid", LOGGING_DEBUG);
-	// We start by deleting the start and end node objects
-	delete _startNode;
+	// We start by deleting the end node object
 	delete _endNode;
 
 	TextLogger::LOG("Grid nodes deleted", LOGGING_DEBUG);

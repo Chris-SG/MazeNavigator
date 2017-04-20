@@ -19,6 +19,7 @@ BreadthFirstSearch::~BreadthFirstSearch()
 
 }
 
+
 /// <summary>
 /// Attempts to solve the maze using the Breadth First Search Algorithm
 /// <summary>
@@ -39,7 +40,7 @@ std::vector<SearchNode*> BreadthFirstSearch::Solve(Grid2D* map)
 	GetDirectionOrder(map->GetEnd()->GetPos());
 
 	// Keep trying until we find the end
-	/* consider adding a check so we can't get stuck (will probably crash) */
+	// consider adding a check so we can't get stuck (will probably crash) 
 	while (!(_currentNode->IsEqual(*map->GetEnd())))
 	{
 		lSs.str(string());
@@ -94,6 +95,15 @@ std::vector<SearchNode*> BreadthFirstSearch::Solve(Grid2D* map)
 		}
 
 		_searchedNodes.push_back(_currentNode); // We can add our current node to the list of nodes we have searched
+		if (_searchStack.size() == 0)
+		{
+			TextLogger::LOG("No path exists for maze!", LOGGING_FATAL);
+			timer->EndTimer();
+
+			TextLogger::LOG("Completed in " + timer->PrintTime_ms(), LOGGING_DEFAULT);
+			_timeTaken = timer->GetTime_ms();
+			return _path;
+		}
 		_currentNode = _searchStack.front(); // And get a new node to visit
 		_searchStack.erase(_searchStack.begin()); // And remove it from the list of nodes we need to visit
 	}

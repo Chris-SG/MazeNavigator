@@ -153,6 +153,7 @@
     <ClCompile Include="src\GreedyBestFirstSearch.cpp" />
     <ClCompile Include="src\Grid2D.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\IterativeDeepeningDepthFirstSearch.cpp" />
     <ClCompile Include="src\ITreeSearch.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MapParser.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="include\GreedyBestFirstSearch.h" />
     <ClInclude Include="include\Grid2D.h" />
     <ClInclude Include="include\Image.h" />
+    <ClInclude Include="include\IterativeDeepeningDepthFirstSearch.h" />
     <ClInclude Include="include\ITreeSearch.h" />
     <ClInclude Include="include\MapParser.h" />
     <ClInclude Include="include\Navigator.h" />
